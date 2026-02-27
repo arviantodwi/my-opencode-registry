@@ -17,14 +17,14 @@
       "type": "remote",
       "url": "https://mcp.context7.com/mcp",
       "headers": {
-        "CONTEXT7_API_KEY": "YOUR_API_KEY"
+        "CONTEXT7_API_KEY": "{env:CONTEXT7_API_KEY}"
       }
     },
     "zai-vision": {
       "type": "local",
       "command": ["npx", "-y", "@z_ai/mcp-server"],
       "environment": {
-        "Z_AI_API_KEY": "YOUR_API_KEY",
+        "Z_AI_API_KEY": "{env:Z_AI_API_KEY}",
         "Z_AI_MODE": "ZAI"
       }
     },
@@ -33,7 +33,7 @@
       "type": "remote",
       "url": "https://api.z.ai/api/mcp/web_search_prime/mcp",
       "headers": {
-        "Authorization": "Bearer YOUR_API_KEY"
+        "Authorization": "Bearer {env:Z_AI_API_KEY}"
       }
     },
     "zai-web-reader": {
@@ -41,7 +41,7 @@
       "type": "remote",
       "url": "https://api.z.ai/api/mcp/web_reader/mcp",
       "headers": {
-        "Authorization": "Bearer YOUR_API_KEY"
+        "Authorization": "Bearer {env:Z_AI_API_KEY}"
       }
     },
     "framelink-figma-mcp": {
@@ -50,7 +50,7 @@
         "npx",
         "-y",
         "figma-developer-mcp",
-        "--figma-api-key=YOUR_API_KEY",
+        "--figma-api-key={env:FIGMA_API_KEY}",
         "--stdio"
       ]
     }
