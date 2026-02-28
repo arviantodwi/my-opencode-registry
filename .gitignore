@@ -4,3 +4,4 @@ bun.lock
 *.bak
 .env
 !.env.example
+.DS_Store
