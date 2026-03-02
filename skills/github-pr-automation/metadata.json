@@ -4,6 +4,6 @@
   "created": "2026-03-02",
   "description": "Best practices for creating pull requests, branch naming conventions, and PR workflow guidelines",
   "tags": ["github", "pull-request", "workflow", "branch-naming"],
-  "commands": ["gh-pr-create", "gh-get-branches"],
+  "commands": ["gh/pr-create", "gh/get-branches"],
   "integrations": ["commit"]
 }

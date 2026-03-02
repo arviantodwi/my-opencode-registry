@@ -11,7 +11,7 @@ Comprehensive guide to GitHub pull request automation and best practices for sof
 ## When to Apply
 
 Use this skill when:
-- Creating pull requests using `/gh-pr-create` command
+- Creating pull requests using `/gh/pr-create` command
 - Planning branch naming conventions
 - Establishing PR review processes
 - Setting up automated PR workflows
@@ -58,47 +58,38 @@ Closes #123
 Related to #456
 ```
 
-## Rule Categories
-
-| Priority | Category         | Impact | Prefix       |
-| -------- | ---------------- | ------ | ------------ |
-| 1        | Branch Naming    | HIGH   | `branch-`    |
-| 2        | PR Best Practices | HIGH | `pr-`         |
-| 3        | Review Guidelines | MEDIUM | `review-`    |
-| 4        | Workflow Patterns | MEDIUM | `workflow-`  |
-
 ## Core Guidelines
 
 ### 1. Branch Naming (HIGH)
 
-- `branch-feature-prefix` → Use `feature/`, `fix/`, `hotfix/` prefixes
-- `branch-descriptive-name` → Use descriptive, kebab-case names
-- `branch-length-limit` → Keep branch names under 50 characters
+- Use `feature/`, `fix/`, `hotfix/` prefixes for different types of changes
+- Use descriptive, kebab-case names
+- Keep branch names under 50 characters
 
 ### 2. PR Best Practices (HIGH)
 
-- `pr-clear-titles` → Use conventional commit format in titles
-- `pr-descriptive-bodies` → Provide detailed change descriptions
-- `pr-linked-issues` → Link to related issues and PRs
-- `pr-reviewers` → Assign appropriate reviewers
+- Use conventional commit format in PR titles
+- Provide detailed change descriptions
+- Link to related issues and PRs
+- Assign appropriate reviewers
 
 ### 3. Review Guidelines (MEDIUM)
 
-- `review-checklist` → Provide review checklist
-- `review-feedback` → Give constructive feedback
-- `review-approval` | Clear approval criteria
+- Provide review checklist
+- Give constructive feedback
+- Clear approval criteria
 
 ### 4. Workflow Patterns (MEDIUM)
 
-- `workflow-branching` → Use GitFlow or similar branching strategy
-- `workflow-ci-cd` → Integrate with CI/CD pipelines
-- `workflow-merge-strategies` | Choose appropriate merge strategies
+- Use GitFlow or similar branching strategy
+- Integrate with CI/CD pipelines
+- Choose appropriate merge strategies
 
 ## Integration with Commands
 
 This skill integrates with:
-- `/gh-pr-create` → Automated PR creation
-- `/gh-get-branches` → Branch listing and selection
+- `/gh/pr-create` → Automated PR creation
+- `/gh/get-branches` → Branch listing and selection
 - `/commit` → Conventional commits integration
 
 ## Benefits

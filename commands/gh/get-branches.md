@@ -9,37 +9,32 @@ author: "Arvianto D. Wicaksono <dev@arvian.to>"
 
 List all available branches in the repository to help users identify target branches for pull requests.
 
-**Step 1: Check prerequisites**
-- Verify we're in a Git repository: `git rev-parse --git-dir`
-- Ensure we have remote branches: `git branch -r`
-
-**Step 2: List all branches**
+**Execute:**
 ```bash
-# List all remote branches
+# Verify git repository
+git rev-parse --git-dir || echo "Error: Not in a Git repository"
+
+# List all branches with context
+echo "=== Remote Branches ==="
 git branch -r
 
-# List all local branches
+echo ""
+echo "=== Local Branches ==="
 git branch
 
-# Get current branch
+echo ""
+echo "=== Current Branch ==="
 git rev-parse --abbrev-ref HEAD
 
-# Get default branch
-git symbolic-ref refs/remotes/origin/HEAD | sed 's@^refs/remotes/origin/@@'
+echo ""
+echo "=== Default Branch ==="
+git symbolic-ref refs/remotes/origin/HEAD 2>/dev/null | sed 's@^refs/remotes/origin/@@' || echo "main"
+
+echo ""
+echo "=== Next Steps ==="
+echo "Use /gh/pr-create to <branch> to create PR to specific branch"
+echo "Use /gh/pr-create to create PR to default branch"
 ```
-
-**Step 3: Display branch information**
-Show branches in a formatted way:
-- Current branch (marked with *)
-- Default branch (typically main or master)
-- Available remote branches
-- Available local branches
-
-**Step 4: Suggest next steps**
-After displaying branches, suggest:
-- Use `/gh/pr-create to <branch>` to create PR to specific branch
-- Use `/gh/pr-create` to create PR to default branch
-- Use `git checkout <branch>` to switch branches
 
 **Error handling:**
 - Not in a Git repository → show error message
