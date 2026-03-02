@@ -33,30 +33,55 @@ Use consistent, descriptive branch names:
 
 ### PR Title Patterns
 
-Follow conventional commits format in PR titles:
-- `feat: add authentication flow`
-- `fix: resolve login timeout issue`
-- `docs: update API documentation`
-- `refactor: simplify user service logic`
+The `/gh/pr-create` command automatically generates PR titles from commit messages:
+- **Auto-generated**: "Add OAuth2 Authentication and Fix Session Timeout"
+- **Auto-generated**: "Improve API Performance with Caching"
+- **Auto-generated**: "Fix Login Timeout and Optimize Database Queries"
+
+**Title Generation Rules:**
+- Generated from commit messages, not branch names
+- Target length: 80-100 characters (prefer shorter)
+- Single comprehensive summary (clarity is top priority)
+- Title case formatting
+- Extracts action verbs and key nouns from commits
+- No conventional commit prefixes (`feat:`, `fix:`, etc.)
 
 ### PR Description Template
 
+The `/gh/pr-create` command automatically generates PR bodies with the following structure:
+
 ```markdown
 ## Summary
-Brief description of changes
+High-level overview of changes (features, fixes, docs, refactorings)
 
-## Changes Made
-- Change 1
-- Change 2
-- Change 3
+## Context
+### Why These Changes?
+**Features:**
+- List of feature commits
+
+**Bug Fixes:**
+- List of bug fix commits
+
+## Changes
+- Modified: `file1.ts`
+- Added: `file2.ts`
+- Deleted: `file3.ts`
 
 ## Testing
-How changes were tested
+Test files modified and status
+All tests should pass with these changes
 
-## Related Issues
-Closes #123
-Related to #456
+## Risk/Impact
+**Low/Medium/High Risk Changes:**
+- Assessment of potential impact
+- List of risky files if applicable
+
+## Visuals
+UI components modified or "No UI changes in this PR"
+<!-- Add screenshots or GIFs here if applicable -->
 ```
+
+**Note:** All sections are auto-generated from git data. No manual templates required.
 
 ## Core Guidelines
 
@@ -88,16 +113,19 @@ Related to #456
 ## Integration with Commands
 
 This skill integrates with:
-- `/gh/pr-create` → Automated PR creation
+- `/gh/pr-create` → Automated PR title and body generation from commit messages
 - `/gh/get-branches` → Branch listing and selection
-- `/commit` → Conventional commits integration
+- `/commit` → Conventional commits integration (better commits = better PR generation)
 
 ## Benefits
 
-- **Consistent naming** → Clear, organized branch structure
+- **Automated generation** → PR titles and bodies auto-generated from commit messages
+- **No manual templates** → All sections populated from git data
+- **Consistent format** → Every PR has the same structured format
 - **Better collaboration** → Easier code reviews and PR management
-- **Automated workflows** → Streamlined PR creation and merging
-- **Clear documentation** → Self-documenting PRs and commits
+- **Clear context** → Reviewers understand why changes were made
+- **Risk assessment** → Automatic detection of risky changes
+- **Time saving** → No need to manually fill templates
 
 ## Usage
 
@@ -118,12 +146,13 @@ refactor-api-response-handling
 docs/update-api-documentation
 ```
 
-Good PR titles:
+Good PR titles (auto-generated):
 ```
-feat: add OAuth2 authentication support
-fix: resolve session timeout in production
-docs: update API endpoint documentation
-refactor: simplify error handling middleware
+Add OAuth2 Authentication and Fix Session Timeout
+Improve API Performance with Caching
+Fix Login Timeout and Optimize Database Queries
+Update API Documentation with New Endpoints
+Simplify Error Handling and Improve Readability
 ```
 
 Bad branch names:
@@ -134,10 +163,11 @@ auth (too short)
 update (doesn't specify what's updated)
 ```
 
-Bad PR titles:
+Bad PR titles (to avoid):
 ```
-Update code (not descriptive)
-Fix bug (doesn't specify which bug)
-Changes (no context)
-WIP (work in progress, should be finalized before PR)
+feat: add cors and api authentication (includes commit prefix)
+Feature Security Add CORS API (unclear, word salad)
+Update code (too vague)
+Fixes (too brief)
+wip (work in progress)
 ```

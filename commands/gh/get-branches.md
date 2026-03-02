@@ -32,7 +32,7 @@ git symbolic-ref refs/remotes/origin/HEAD 2>/dev/null | sed 's@^refs/remotes/ori
 
 echo ""
 echo "=== Next Steps ==="
-echo "Use /gh/pr-create to <branch> to create PR to specific branch"
+echo "Use /gh/pr-create base:<branch> to create PR to specific branch"
 echo "Use /gh/pr-create to create PR to default branch"
 ```
 

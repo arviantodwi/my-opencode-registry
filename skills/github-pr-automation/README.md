@@ -9,7 +9,7 @@ This skill provides guidelines and patterns for creating effective pull requests
 ## Key Features
 
 - **Branch Naming Conventions**: Consistent, descriptive branch naming patterns
-- **PR Best Practices**: Clear title and description formats
+- **Automated PR Generation**: Title and body generated from commit messages
 - **Workflow Patterns**: GitFlow and similar branching strategies
 - **Review Guidelines**: Effective code review processes
 - **Automation Integration**: Seamless integration with GitHub CLI commands
@@ -58,39 +58,61 @@ update (doesn't specify what's updated)
 
 ### Title Format
 
-Follow conventional commits format:
-- `feat: add authentication flow`
-- `fix: resolve login timeout issue`
-- `docs: update API documentation`
-- `refactor: simplify user service logic`
+PR titles are automatically generated from commit messages:
+- "Add OAuth2 Authentication and Fix Session Timeout" (auto-generated)
+- "Improve API Performance with Caching" (auto-generated)
+- "Fix Login Timeout and Optimize Database Queries" (auto-generated)
+
+**Title Rules:**
+- Target: 80-100 characters (prefer shorter)
+- Single comprehensive summary
+- Title case formatting
+- Generated from commit messages, not branch names
 
 ### Description Template
 
+PR descriptions are automatically generated with the following structure:
+
 ```markdown
 ## Summary
-Brief description of changes
+High-level overview of changes (features, fixes, docs, refactorings)
 
-## Changes Made
-- Change 1
-- Change 2
-- Change 3
+## Context
+### Why These Changes?
+**Features:**
+- List of feature commits
+
+**Bug Fixes:**
+- List of bug fix commits
+
+## Changes
+- Modified: `file1.ts`
+- Added: `file2.ts`
 
 ## Testing
-How changes were tested
+Test files modified and status
+All tests should pass with these changes
 
-## Related Issues
-Closes #123
-Related to #456
+## Risk/Impact
+**Low/Medium/High Risk Changes:**
+- Assessment of potential impact
+
+## Visuals
+UI components modified or "No UI changes in this PR"
 ```
+
+**Note:** All sections are auto-generated from git data. No manual templates required.
 
 ## Integration with Commands
 
 ### `/gh-pr-create`
 
-Automatically generates PR metadata based on branch names and commit messages:
-- Parses branch names to generate titles
-- Creates summaries from diff output
-- Assigns reviewers when specified
+Automatically generates PR metadata from commit messages:
+- **Title**: Generated from commit messages, 80-100 chars, title case
+- **Body**: Auto-generated with Summary, Context, Changes, Testing, Risk/Impact, Visuals sections
+- **Source/Target**: Uses current branch and target branch (or default if not specified)
+
+**Note:** Better commit messages lead to better PR titles and bodies. Branch names are used for organization only.
 
 ### `/gh-get-branches`
 
@@ -98,6 +120,14 @@ Lists available branches to help you choose target branches:
 - Shows current branch
 - Displays default branch
 - Lists all remote branches
+
+**Usage:**
+```bash
+/gh/get-branches
+# View available branches
+/gh/pr-create base:dev
+# Create PR to dev branch
+```
 
 ## Workflow Patterns
 
@@ -152,11 +182,14 @@ Lists available branches to help you choose target branches:
 
 ## Benefits
 
-- **Consistent naming**: Clear, organized branch structure
+- **Automated generation**: PR titles and bodies auto-generated from commit messages
+- **No manual templates**: All sections populated from git data
+- **Consistent format**: Every PR has the same structured format
 - **Better collaboration**: Easier code reviews and PR management
-- **Automated workflows**: Streamlined PR creation and merging
-- **Clear documentation**: Self-documenting PRs and commits
-- **Faster reviews**: Smaller, focused PRs are easier to review
+- **Clear context**: Reviewers understand why changes were made
+- **Risk assessment**: Automatic detection of risky changes
+- **Time saving**: No need to manually fill templates
+- **Better quality**: Improved commit messages lead to better PRs
 
 ## Common Pitfalls
 
@@ -169,11 +202,12 @@ Lists available branches to help you choose target branches:
 
 ### PR Creation
 
-- ❌ Vague titles like "Update code"
-- ❌ Missing descriptions
-- ❌ Not linking related issues
-- ✅ Follow conventional commit format
-- ✅ Provide detailed descriptions
+- ❌ Vague commit messages lead to poor PR titles
+- ❌ Missing conventional commit format
+- ❌ Poor commit descriptions lead to unclear PR bodies
+- ✅ Use conventional commit format for better PR generation
+- ✅ Write clear, descriptive commit messages
+- ✅ Review auto-generated PR titles and bodies before creating
 
 ### Review Process
 
@@ -194,21 +228,29 @@ Lists available branches to help you choose target branches:
 
 ```bash
 # 1. Create feature branch
-git checkout -b feature/user-authentication
+git checkout -b feature/security-enhancements
 
-# 2. Make changes and commit
+# 2. Make changes and commit with conventional format
 git add .
-git commit -m "feat: add OAuth2 authentication support"
+git commit -m "feat: add CORS support for cross-origin requests"
+git add .
+git commit -m "feat: implement API key authentication middleware"
+git add .
+git commit -m "fix: resolve session timeout in auth flow"
 
 # 3. Push to remote
-git push -u origin feature/user-authentication
+git push -u origin feature/security-enhancements
 
-# 4. Create PR
-/gh-pr-create to main
+# 4. Create PR (auto-generated title and body)
+/gh-pr-create base:main
 
-# 5. Review and merge
-# 6. Delete branch
-git branch -d feature/user-authentication
+# 5. Review auto-generated PR
+# Title: "Add CORS Support, API Key Authentication, Fix Session Timeout"
+# Body: Complete with Summary, Context, Changes, Testing, Risk/Impact, Visuals
+
+# 6. Review and merge
+# 7. Delete branch
+git branch -d feature/security-enhancements
 ```
 
 ## Contributing

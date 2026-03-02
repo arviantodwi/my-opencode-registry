@@ -65,8 +65,5 @@ To use the GitHub automation commands:
     /gh/pr-create
 
     # Create PR to specific branch
-    /gh/pr-create to dev
-
-    # Create PR to specific branch with specific reviewer
-    /gh/pr-create to dev as username
+    /gh/pr-create base:dev
     ```

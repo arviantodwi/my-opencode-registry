@@ -38,12 +38,16 @@ feature/<descriptive-name>
 
 ## Integration with Commands
 
-When using `/gh-pr-create`, branches with `feature/` prefix will generate PR titles like:
+**Note:** The `/gh-pr-create` command generates PR titles from commit messages, not branch names. However, consistent branch naming still helps with organization.
+
+When using `/gh-pr-create`, PR titles are generated from commit messages like:
 ```
 feat: add user authentication
 feat: implement dark mode toggle
 feat: integrate with external API
 ```
+
+Branch names are used for organization but do not affect PR title generation. Better commit messages lead to better PR titles.
 
 ## Related Rules
 
@@ -78,7 +82,7 @@ git commit -m "feat: add OAuth2 authentication support"
 
 # Push and create PR
 git push -u origin feature/user-authentication
-/gh-pr-create to main
+/gh-pr-create base:main
 ```
 
 ## Additional Resources

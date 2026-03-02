@@ -1,14 +1,14 @@
-# Use Conventional Commit Format in PR Titles
+# Conventional Commits for Automated PR Generation
 
-Follow conventional commit format when writing pull request titles to provide clear, machine-readable information about the changes.
+Use conventional commit format when writing commit messages. The `/gh/pr-create` command uses these commit messages to automatically generate both PR titles and PR bodies.
 
 ## When to Use
 
 Use this format for:
-- All pull request titles
-- Describing the nature of changes
-- Conveying breaking changes
-- Providing context for automated tools
+- All commit messages
+- Better automated PR title generation
+- Better automated PR body generation
+- Clear communication of change types
 
 ## Format Structure
 
@@ -36,7 +36,7 @@ Use this format for:
 
 ## Examples
 
-**Good Examples:**
+**Good Commit Messages (lead to better PR generation):**
 ```
 feat: add OAuth2 authentication support
 fix: resolve login timeout in production
@@ -46,7 +46,7 @@ perf: optimize database queries
 test: add unit tests for user service
 ```
 
-**Bad Examples:**
+**Bad Commit Messages (lead to poor PR generation):**
 ```
 Update code (missing type)
 Fix the bug (not specific)
@@ -78,16 +78,27 @@ fix!: change data format (BREAKING CHANGE: requires migration)
 
 ## Why This Matters
 
-- **Automated changelogs**: Tools can generate changelogs from PR titles
+- **Better PR titles**: Conventional commits generate more accurate, descriptive PR titles
+- **Better PR bodies**: Commit types are used to group and structure PR content
+- **Automated changelogs**: Tools can generate changelogs from commit messages
 - **Semantic versioning**: Automatically determine version bumps
 - **Clear communication**: Convey change nature to team
 - **CI/CD integration**: Trigger builds/publishes based on commit types
 
 ## Integration with Commands
 
-The `/gh-pr-create` command automatically generates PR titles from branch names:
+The `/gh-pr-create` command automatically generates PR titles and bodies from commit messages:
 
-Branch: `feature/user-authentication` → PR Title: `feat: add user authentication`
+**Input:**
+- Branch: `feature/overview`
+- Commits:
+  - "feat: add CORS support"
+  - "feat: implement API key authentication"
+  - "fix: resolve session timeout"
+
+**Output:**
+- PR Title: "Add CORS Support, API Key Authentication, Fix Session Timeout"
+- PR Body: Auto-generated with Summary, Context, Changes, Testing, Risk/Impact, Visuals sections
 
 ## Anti-Patterns
 
@@ -95,6 +106,7 @@ Branch: `feature/user-authentication` → PR Title: `feat: add user authenticati
 - ❌ Don't add period at end → keep it clean
 - ❌ Don't make descriptions too long → keep under 72 characters
 - ❌ Don't be vague → use specific, descriptive language
+- ❌ Don't commit without conventional format → poor PR generation
 
 ## Best Practices
 
@@ -103,27 +115,60 @@ Branch: `feature/user-authentication` → PR Title: `feat: add user authenticati
 3. **No period**: Don't end description with period
 4. **Be specific**: Clearly describe what was done
 5. **Keep it short**: Aim for 50-72 characters total
+6. **Be consistent**: Use the same format for all commits in a PR
 
-## Template for PR Description
+## Automated PR Generation
 
-```markdown
-## Summary
-Brief description of changes
+### How Commit Messages Affect PR Title
 
-## Type of Change
-- [ ] Bug fix (non-breaking change which fixes an issue)
-- [ ] New feature (non-breaking change which adds functionality)
-- [ ] Breaking change (fix or feature that would cause existing functionality to not work as expected)
-- [ ] Documentation update
+**Good commits → Good PR title:**
+```
+feat: add OAuth2 authentication
+fix: resolve session timeout
+test: add integration tests
+```
+→ PR Title: "Add OAuth2 Authentication, Fix Session Timeout"
 
-## Testing
-How changes were tested
+**Poor commits → Poor PR title:**
+```
+update
+fix bug
+test
+```
+→ PR Title: "Update Code" (too vague)
 
-## Checklist
-- [ ] Code follows project style guidelines
-- [ ] Changes have been tested
-- [ ] Documentation has been updated
-- [ ] No new warnings generated
+### How Commit Messages Affect PR Body
+
+Commit types are used to group changes in the PR body:
+
+- **Features**: All `feat:` commits grouped together
+- **Bug Fixes**: All `fix:` commits grouped together
+- **Documentation**: All `docs:` commits grouped together
+- **Refactoring**: All `refactor:` commits grouped together
+
+## Example Workflow
+
+```bash
+# 1. Create feature branch
+git checkout -b feature/security-enhancements
+
+# 2. Make changes and commit with conventional format
+git add .
+git commit -m "feat: add CORS support for cross-origin requests"
+git add .
+git commit -m "feat: implement API key authentication middleware"
+git add .
+git commit -m "fix: resolve session timeout in auth flow"
+git add .
+git commit -m "test: add integration tests for authentication"
+
+# 3. Push and create PR
+git push -u origin feature/security-enhancements
+/gh-pr-create base:main
+
+# 4. Review auto-generated PR
+# Title: "Add CORS Support, API Key Authentication, Fix Session Timeout"
+# Body: Auto-generated with all sections populated from commit messages
 ```
 
 ## Integration with SemVer
@@ -134,26 +179,9 @@ How changes were tested
 | `fix:`                          | PATCH        |
 | Any type with `!` or BREAKING CHANGE | MAJOR        |
 
-## Example Workflow
-
-```bash
-# 1. Create feature branch
-git checkout -b feature/user-authentication
-
-# 2. Make changes and commit
-git add .
-git commit -m "feat: add OAuth2 authentication support"
-
-# 3. Push and create PR
-git push -u origin feature/user-authentication
-/gh-pr-create to main
-
-# 4. Review PR title
-# Automatically generated: "feat: add user authentication"
-```
-
 ## Additional Resources
 
 - [Conventional Commits](https://www.conventionalcommits.org/)
 - [Conventional Commits for npm](https://docs.npmjs.com/cli/v6/using-npm/semver#new-features-backward-compatibility-semantic-versioning)
 - [Angular Commit Convention](https://github.com/angular/angular/blob/22b96b9/CONTRIBUTING.md#-commit-message-guidelines)
+- See also: [Automated PR Body Generation](./pr-body-automated-generation.md)
