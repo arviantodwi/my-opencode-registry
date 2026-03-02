@@ -195,28 +195,6 @@ generate_body() {
     body="${body}\n"
   fi
   
-  # Changes Section
-  body="${body}## Changes\n\n"
-  if [ -n "$changed_files" ]; then
-    echo "$changed_files" > /tmp/changes_temp.txt
-    while IFS= read -r line; do
-      local status=$(echo "$line" | awk '{print $1}')
-      local file=$(echo "$line" | awk '{print $2}')
-      local status_text=""
-      case "$status" in
-        "M") status_text="Modified:" ;;
-        "A") status_text="Added:" ;;
-        "D") status_text="Deleted:" ;;
-        "R") status_text="Renamed:" ;;
-        *) status_text="Changed:" ;;
-      esac
-      body="${body}- ${status_text} \`${file}\`\n"
-    done < /tmp/changes_temp.txt
-  else
-    body="${body}- No file changes detected\n"
-  fi
-  body="${body}\n"
-  
   # Testing Section
   body="${body}## Testing\n\n"
   if [ "$test_count" -gt 0 ]; then

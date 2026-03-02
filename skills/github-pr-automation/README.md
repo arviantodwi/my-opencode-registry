@@ -84,11 +84,7 @@ High-level overview of changes (features, fixes, docs, refactorings)
 
 **Bug Fixes:**
 - List of bug fix commits
-
-## Changes
-- Modified: `file1.ts`
-- Added: `file2.ts`
-
+ 
 ## Testing
 Test files modified and status
 All tests should pass with these changes

@@ -219,14 +219,7 @@ This PR includes 2 feature(s). Fixes 1 issue(s).
 
 **Bug Fixes:**
 - Resolve session timeout issue in auth flow
-
-## Changes
-
-- Added: `src/middleware/cors.ts`
-- Added: `src/middleware/auth.ts`
-- Modified: `src/controllers/session.ts`
-- Added: `tests/integration/auth.test.ts`
-
+ 
 ## Testing
 
 Test files modified (1):
@@ -277,13 +270,7 @@ Fixes 2 issue(s). Refactors 1 component(s).
 
 **Refactorings:**
 - Simplify profile data structure
-
-## Changes
-
-- Modified: `src/components/Profile.tsx`
-- Modified: `src/services/user.ts`
-- Modified: `src/types/profile.ts`
-
+ 
 ## Testing
 
 No test files modified in this PR. Manual testing recommended.
