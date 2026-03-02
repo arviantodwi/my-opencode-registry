@@ -61,7 +61,7 @@ High-level overview of changes (features, fixes, docs, refactorings)
 
 **Bug Fixes:**
 - List of bug fix commits
- 
+
 ## Testing
 Test files modified and status
 All tests should pass with these changes

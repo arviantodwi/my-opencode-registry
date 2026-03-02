@@ -56,6 +56,8 @@ The PR title is generated from your commit messages:
 
 ### 5. Generate PR Body
 
+Template to use: [template/pr-template.md](./template/pr-template.md)
+
 The PR body is automatically generated with the following structure:
 
 #### Summary Paragraph (No Header)
