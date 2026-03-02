@@ -87,7 +87,7 @@ fix!: change data format (BREAKING CHANGE: requires migration)
 
 ## Integration with Commands
 
-The `/gh-pr-create` command automatically generates PR titles and bodies from commit messages:
+The `/gh/pr-create` command automatically generates PR titles and bodies from commit messages:
 
 **Input:**
 - Branch: `feature/overview`
@@ -164,7 +164,7 @@ git commit -m "test: add integration tests for authentication"
 
 # 3. Push and create PR
 git push -u origin feature/security-enhancements
-/gh-pr-create base:main
+/gh/pr-create base:main
 
 # 4. Review auto-generated PR
 # Title: "Add CORS Support, API Key Authentication, Fix Session Timeout"

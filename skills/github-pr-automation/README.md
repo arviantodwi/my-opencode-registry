@@ -4,7 +4,7 @@ A comprehensive skill for GitHub pull request automation, featuring best practic
 
 ## Overview
 
-This skill provides guidelines and patterns for creating effective pull requests, managing branches, and establishing clear collaboration workflows. It integrates seamlessly with the `/gh-pr-create` and `/gh-get-branches` commands.
+This skill provides guidelines and patterns for creating effective pull requests, managing branches, and establishing clear collaboration workflows. It integrates seamlessly with the `/gh/pr-create` and `/gh/get-branches` commands.
 
 ## Key Features
 
@@ -17,7 +17,7 @@ This skill provides guidelines and patterns for creating effective pull requests
 ## When to Use
 
 Load this skill when:
-- Creating pull requests using `/gh-pr-create`
+- Creating pull requests using `/gh/pr-create`
 - Planning branch naming for new features or fixes
 - Establishing team coding standards and workflows
 - Writing PR descriptions and commit messages
@@ -105,7 +105,7 @@ UI components modified or "No UI changes in this PR"
 
 ## Integration with Commands
 
-### `/gh-pr-create`
+### `/gh/pr-create`
 
 Automatically generates PR metadata from commit messages:
 - **Title**: Generated from commit messages, 80-100 chars, title case
@@ -114,7 +114,7 @@ Automatically generates PR metadata from commit messages:
 
 **Note:** Better commit messages lead to better PR titles and bodies. Branch names are used for organization only.
 
-### `/gh-get-branches`
+### `/gh/get-branches`
 
 Lists available branches to help you choose target branches:
 - Shows current branch
@@ -242,7 +242,7 @@ git commit -m "fix: resolve session timeout in auth flow"
 git push -u origin feature/security-enhancements
 
 # 4. Create PR (auto-generated title and body)
-/gh-pr-create base:main
+/gh/pr-create base:main
 
 # 5. Review auto-generated PR
 # Title: "Add CORS Support, API Key Authentication, Fix Session Timeout"
