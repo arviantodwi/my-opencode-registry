@@ -129,29 +129,39 @@ generate_body() {
   local risky_files=$(echo "$changed_files_list" | grep -iE "(package\.json|tsconfig\.json|\.env|routes|controllers|models|middleware)" 2>/dev/null)
   local risky_count=$(echo "$risky_files" | wc -l | tr -d ' ')
   
-  # Summary Section
-  body="${body}## Summary\n\n"
+  # Summary Section - generate descriptive summary from first 2-3 commits
+  local summary=""
+  local first_commit=$(echo "$commits" | head -1 | cut -d'|' -f2 | sed -E 's/^[a-z]+(\([^)]+\))?: ?//')
+  local second_commit=$(echo "$commits" | head -2 | tail -1 | cut -d'|' -f2 | sed -E 's/^[a-z]+(\([^)]+\))?: ?//')
+  local third_commit=$(echo "$commits" | head -3 | tail -1 | cut -d'|' -f2 | sed -E 's/^[a-z]+(\([^)]+\))?: ?//')
+
+  # Build summary with first 2 commits (max 150-250 chars)
+  summary="${first_commit}"
+  if [ -n "$second_commit" ] && [ "$second_commit" != "$first_commit" ]; then
+    summary="${summary}, ${second_commit}"
+    # Check length and trim if needed
+    local summary_len=${#summary}
+    if [ $summary_len -gt 250 ]; then
+      summary="${first_commit}"
+    fi
+  fi
+
+  # Add third commit if needed and space allows
+  if [ -n "$third_commit" ] && [ "$third_commit" != "$first_commit" ] && [ "$third_commit" != "$second_commit" ]; then
+    local summary_len=${#summary}
+    if [ $summary_len -lt 200 ]; then
+      summary="${summary}. ${third_commit}"
+    fi
+  fi
+
+  # Add summary at beginning of body (no header)
+  body="${body}${summary}\n\n"
   
-  # Count commit types
+  # Count commit types for Context section
   local feat_count=$(echo "$commits" | grep -c "^.*|feat:" 2>/dev/null || echo 0)
   local fix_count=$(echo "$commits" | grep -c "^.*|fix:" 2>/dev/null || echo 0)
   local docs_count=$(echo "$commits" | grep -c "^.*|docs:" 2>/dev/null || echo 0)
   local refactor_count=$(echo "$commits" | grep -c "^.*|refactor:" 2>/dev/null || echo 0)
-  
-  if [ "$feat_count" -gt 0 ]; then
-    body="${body}This PR includes ${feat_count} feature(s)."
-  fi
-  if [ "$fix_count" -gt 0 ]; then
-    body="${body} Fixes ${fix_count} issue(s)."
-  fi
-  if [ "$docs_count" -gt 0 ]; then
-    body="${body} Updates documentation in ${docs_count} location(s)."
-  fi
-  if [ "$refactor_count" -gt 0 ]; then
-    body="${body} Refactors ${refactor_count} component(s)."
-  fi
-  
-  body="${body}\n\n"
   
   # Context Section
   body="${body}## Context\n\n"
