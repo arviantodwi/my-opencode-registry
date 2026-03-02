@@ -14,256 +14,103 @@ Create a pull request for the current repository using GitHub CLI.
 - `/gh/pr-create base:dev` → target: dev branch
 
 **Execute:**
-```bash
-# Check prerequisites
-gh --version || echo "Error: GitHub CLI not installed. Install with: brew install gh"
-gh auth status || echo "Error: Not authenticated. Run: gh auth login --ssh"
 
-# Parse arguments to extract target branch
-TARGET_BRANCH="main"
-args=$@()
+The command executes the following steps:
 
-# Parse "base:<branch>" pattern
-for ((i=0; i<${#args[@]}; i++)); do
-  if [[ "${args[$i]}" == base:* ]]; then
-    TARGET_BRANCH="${args[$i]#base:}"
-  fi
-done
+### 1. Verify Prerequisites
 
-# Get current branch
-CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+First, it checks that GitHub CLI (gh) is installed and that you're authenticated:
 
-# Extract commits between source and target branches
-COMMITS=$(git log --pretty=format:"%h|%s" origin/$TARGET_BRANCH..HEAD 2>/dev/null | head -50)
+- Checks if `gh` is available in your system
+- Verifies you're logged in to GitHub
+- Shows helpful error messages if prerequisites aren't met
 
-# Check if there are any commits
-if [ -z "$COMMITS" ]; then
-  echo "Error: No commits found between current branch and $TARGET_BRANCH"
-  exit 1
-fi
+### 2. Parse Command Arguments
 
-# Function to extract action verbs from commit messages
-extract_actions() {
-  local commits="$1"
-  echo "$commits" | grep -oE "add|implement|fix|remove|update|improve|resolve|enhance|create|delete|modify|refactor|optimize|secure" | sort -u | tr '\n' ',' | sed 's/,$//'
-}
+The command accepts an optional target branch argument using the `base:` prefix:
 
-# Function to extract key nouns from commit messages
-extract_nouns() {
-  local commits="$1"
-  echo "$commits" | grep -oE "(cors|authentication|security|api|authentication|login|token|session|test|coverage|middleware|endpoint|feature|bug|issue|performance|database|cache|ui|interface|frontend|backend)" | sort -u | tr '\n' ',' | sed 's/,$//'
-}
+- Default target: `main` (if no argument provided)
+- With argument: `/gh/pr-create base:dev` targets the `dev` branch
+- Example: `/gh/pr-create base:develop` targets the `develop` branch
 
-# Function to generate comprehensive summary title
-generate_title() {
-  local commits="$1"
-  local actions=$(extract_actions "$commits")
-  local nouns=$(extract_nouns "$commits")
-  
-  # Create title combining actions and nouns
-  local title=""
-  
-  # Try multiple strategies for the best title
-  if [ -n "$nouns" ]; then
-    # Strategy 1: Focus on key features
-    local noun_count=$(echo "$nouns" | tr ',' '\n' | wc -l)
-    local key_nouns=$(echo "$nouns" | tr ',' '\n' | head -3 | tr '\n' ',' | sed 's/,$//')
-    
-    if [ -n "$actions" ]; then
-      local first_action=$(echo "$actions" | cut -d',' -f1)
-      title="${first_action} ${key_nouns}"
-    else
-      title="${key_nouns}"
-    fi
-  else
-    # Fallback: Use commit messages
-    local first_commit=$(echo "$commits" | head -1 | cut -d'|' -f2)
-    title=$(echo "$first_commit" | sed 's/^[a-z]*://g' | sed 's/[^a-zA-Z0-9 ]//g' | awk '{for(i=1;i<=NF;i++) printf "%s ", toupper(substr($i,1,1)) substr($i,2)}' | sed 's/ $//')
-  fi
-  
-  # Apply title case formatting
-  title=$(echo "$title" | sed 's/ \(.\)/\U\1/g' | sed 's/^[a-z]/\U&/')
-  
-  # Remove duplicate words
-  title=$(echo "$title" | tr ' ' '\n' | awk '!seen[$0]++' | tr '\n' ' ' | sed 's/ $//')
-  
-  # Trim to 80-100 characters (prefer shorter)
-  local len=${#title}
-  if [ $len -gt 100 ]; then
-    title=$(echo "$title" | cut -c1-100)
-  fi
-  if [ $len -lt 80 ]; then
-    # Try to add more context from branch name
-    local branch_context=$(echo "$CURRENT_BRANCH" | sed 's/^[a-z]*\///' | sed 's/[-_]/ /g' | awk '{for(i=1;i<=NF;i++) printf "%s ", toupper(substr($i,1,1)) substr($i,2)}' | sed 's/ $//')
-    if [ ${#branch_context} -gt 0 ]; then
-      local combined="${title} ${branch_context}"
-      if [ ${#combined} -le 100 ]; then
-        title="$combined"
-      fi
-    fi
-  fi
-  
-  echo "$title"
-}
+### 3. Get Current Branch Information
 
-# Function to generate PR body
-generate_body() {
-  local commits="$1"
-  local target_branch="$2"
-  
-  local body=""
-  
-  # Extract file changes
-  local changed_files=$(git diff --name-status origin/$target_branch..HEAD 2>/dev/null | head -20)
-  local changed_files_list=$(git diff --name-only origin/$target_branch..HEAD 2>/dev/null)
-  
-  # Detect test files
-  local test_files=$(echo "$changed_files_list" | grep -iE "(spec|test|e2e|integration)" 2>/dev/null)
-  local test_count=$(echo "$test_files" | wc -l | tr -d ' ')
-  
-  # Detect UI files
-  local ui_files=$(echo "$changed_files_list" | grep -iE "\.(css|jsx|tsx|vue|html|scss|sass)" 2>/dev/null)
-  local ui_count=$(echo "$ui_files" | wc -l | tr -d ' ')
-  
-  # Detect risky files
-  local risky_files=$(echo "$changed_files_list" | grep -iE "(package\.json|tsconfig\.json|\.env|routes|controllers|models|middleware)" 2>/dev/null)
-  local risky_count=$(echo "$risky_files" | wc -l | tr -d ' ')
-  
-  # Summary Section - generate descriptive summary from first 2-3 commits
-  local summary=""
-  local first_commit=$(echo "$commits" | head -1 | cut -d'|' -f2 | sed -E 's/^[a-z]+(\([^)]+\))?: ?//')
-  local second_commit=$(echo "$commits" | head -2 | tail -1 | cut -d'|' -f2 | sed -E 's/^[a-z]+(\([^)]+\))?: ?//')
-  local third_commit=$(echo "$commits" | head -3 | tail -1 | cut -d'|' -f2 | sed -E 's/^[a-z]+(\([^)]+\))?: ?//')
+The command identifies:
 
-  # Build summary with first 2 commits (max 150-250 chars)
-  summary="${first_commit}"
-  if [ -n "$second_commit" ] && [ "$second_commit" != "$first_commit" ]; then
-    summary="${summary}, ${second_commit}"
-    # Check length and trim if needed
-    local summary_len=${#summary}
-    if [ $summary_len -gt 250 ]; then
-      summary="${first_commit}"
-    fi
-  fi
+- Your current working branch name
+- All commits between your branch and the target branch
+- Files that have been modified, added, or deleted
 
-  # Add third commit if needed and space allows
-  if [ -n "$third_commit" ] && [ "$third_commit" != "$first_commit" ] && [ "$third_commit" != "$second_commit" ]; then
-    local summary_len=${#summary}
-    if [ $summary_len -lt 200 ]; then
-      summary="${summary}. ${third_commit}"
-    fi
-  fi
+If no commits are found between branches, it displays an error and exits.
 
-  # Add summary at beginning of body (no header)
-  body="${body}${summary}\n\n"
-  
-  # Count commit types for Context section
-  local feat_count=$(echo "$commits" | grep -c "^.*|feat:" 2>/dev/null || echo 0)
-  local fix_count=$(echo "$commits" | grep -c "^.*|fix:" 2>/dev/null || echo 0)
-  local docs_count=$(echo "$commits" | grep -c "^.*|docs:" 2>/dev/null || echo 0)
-  local refactor_count=$(echo "$commits" | grep -c "^.*|refactor:" 2>/dev/null || echo 0)
-  
-  # Context Section
-  body="${body}## Context\n\n"
-  body="${body}### Why These Changes?\n\n"
-  
-  # Group commits by type
-  if [ "$feat_count" -gt 0 ]; then
-    body="${body}**Features:**\n"
-    echo "$commits" | grep "|feat:" | cut -d'|' -f2 | sed 's/^feat: /- /' >> /tmp/commits_temp.txt
-    while IFS= read -r line; do
-      body="${body}${line}\n"
-    done < /tmp/commits_temp.txt
-    body="${body}\n"
-  fi
-  
-  if [ "$fix_count" -gt 0 ]; then
-    body="${body}**Bug Fixes:**\n"
-    echo "$commits" | grep "|fix:" | cut -d'|' -f2 | sed 's/^fix: /- /' >> /tmp/commits_temp2.txt
-    while IFS= read -r line; do
-      body="${body}${line}\n"
-    done < /tmp/commits_temp2.txt
-    body="${body}\n"
-  fi
-  
-  if [ "$docs_count" -gt 0 ]; then
-    body="${body}**Documentation:**\n"
-    echo "$commits" | grep "|docs:" | cut -d'|' -f2 | sed 's/^docs: /- /' >> /tmp/commits_temp3.txt
-    while IFS= read -r line; do
-      body="${body}${line}\n"
-    done < /tmp/commits_temp3.txt
-    body="${body}\n"
-  fi
-  
-  # Testing Section
-  body="${body}## Testing\n\n"
-  if [ "$test_count" -gt 0 ]; then
-    body="${body}Test files modified (${test_count}):\n"
-    echo "$test_files" > /tmp/test_files_temp.txt
-    while IFS= read -r file; do
-      body="${body}- \`${file}\`\n"
-    done < /tmp/test_files_temp.txt
-    body="${body}\n"
-    body="${body}All tests should pass with these changes.\n"
-  else
-    body="${body}No test files modified in this PR. Manual testing recommended.\n"
-  fi
-  body="${body}\n"
-  
-  # Risk/Impact Section
-  body="${body}## Risk/Impact\n\n"
-  if [ "$risky_count" -gt 0 ]; then
-    body="${body}**Potential Impact:**\n"
-    body="${body}- ${risky_count} core or configuration file(s) modified\n"
-    body="${body}- Changes may affect application stability\n"
-    body="${body}- Thorough testing recommended before merging\n"
-    
-    if [ -n "$risky_files" ]; then
-      body="${body}\nRisky files:\n"
-      echo "$risky_files" > /tmp/risky_files_temp.txt
-      while IFS= read -r file; do
-        body="${body}- \`${file}\`\n"
-      done < /tmp/risky_files_temp.txt
-    fi
-  else
-    body="${body}**Low Risk Changes:**\n"
-    body="${body}- No core or configuration files modified\n"
-    body="${body}- Safe to merge after review\n"
-  fi
-  body="${body}\n"
-  
-  # Visuals Section
-  body="${body}## Visuals\n\n"
-  if [ "$ui_count" -gt 0 ]; then
-    body="${body}UI components modified (${ui_count}):\n"
-    echo "$ui_files" > /tmp/ui_files_temp.txt
-    while IFS= read -r file; do
-      body="${body}- \`${file}\`\n"
-    done < /tmp/ui_files_temp.txt
-    body="${body}\n<!-- Add screenshots or GIFs here to demonstrate UI changes -->\n"
-  else
-    body="${body}No UI changes in this PR.\n"
-  fi
-  
-  # Cleanup temp files
-  rm -f /tmp/commits_temp*.txt 2>/dev/null
-  rm -f /tmp/changes_temp.txt 2>/dev/null
-  rm -f /tmp/test_files_temp.txt 2>/dev/null
-  rm -f /tmp/risky_files_temp.txt 2>/dev/null
-  rm -f /tmp/ui_files_temp.txt 2>/dev/null
-  
-  echo "$body"
-}
+### 4. Generate PR Title
 
-# Generate PR body first
-PR_BODY=$(generate_body "$COMMITS" "$TARGET_BRANCH")
+The PR title is generated from your commit messages:
 
-# Generate title from body
-PR_TITLE=$(generate_title "$COMMITS")
+- Extracts action verbs (add, fix, improve, etc.) from commits
+- Identifies key nouns (authentication, security, performance, etc.)
+- Combines them into a comprehensive, concise title
+- Applies title case formatting (like paper titles)
+- Ensures the title is between 80-100 characters
+- Falls back to the first commit message if needed
 
-# Create PR
-gh pr create --source "$CURRENT_BRANCH" --base "$TARGET_BRANCH" --title "$PR_TITLE" --body "$PR_BODY"
-```
+### 5. Generate PR Body
+
+The PR body is automatically generated with the following structure:
+
+#### Summary Paragraph (No Header)
+
+- First paragraph directly describes the changes
+- Created from the first 2-3 commit messages
+- Removes commit type prefixes and scopes (e.g., "feat:", "fix(auth):")
+- Limited to 150-250 characters for clarity
+
+#### Context Section
+
+Explains why changes were made by grouping commits by type:
+
+- **Features:** Lists all feature commits
+- **Bug Fixes:** Lists all bug fix commits
+- **Documentation:** Lists all documentation updates
+- **Refactorings:** Lists all code refactorings
+
+Each commit is shown as a bullet point.
+
+#### Testing Section
+
+Detects and reports test-related changes:
+
+- Identifies test files (containing "spec", "test", "e2e", "integration")
+- Lists modified test files
+- Shows test file count
+- Recommends manual testing if no tests were modified
+
+#### Risk/Impact Section
+
+Assesses potential impact of changes:
+
+- **High Risk:** Core files, config files, or middleware were modified
+- **Low Risk:** Only application code files were modified
+- Lists specific risky files if detected
+- Provides appropriate testing recommendations
+
+#### Visuals Section
+
+Detects UI-related changes:
+
+- Identifies UI component files (CSS, JSX, TSX, Vue, HTML, SCSS, Sass)
+- Lists modified UI files with count
+- Adds placeholder for screenshots or GIFs if UI changes exist
+- Shows "No UI changes" if none detected
+
+### 6. Create Pull Request
+
+Finally, the command uses GitHub CLI to create the PR:
+
+- Creates PR from your current branch to target branch
+- Uses the auto-generated title (80-100 chars, title case)
+- Uses the auto-generated body with all 5 sections
+- Handles any GitHub API errors gracefully
 
 **Error handling:**
 - Missing target branch → use default branch
