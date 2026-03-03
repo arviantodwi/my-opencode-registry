@@ -10,6 +10,7 @@ author: "Arvianto D. Wicaksono <dev@arvian.to>"
 Create a pull request for the current repository using GitHub CLI.
 
 **Parse arguments:**
+
 - `/gh/pr-create` → target: default branch
 - `/gh/pr-create base:dev` → target: dev branch
 
@@ -38,10 +39,11 @@ The command accepts an optional target branch argument using the `base:` prefix:
 The command identifies:
 
 - Your current working branch name
-- All commits between your branch and the target branch
+- All commits on your branch
 - Files that have been modified, added, or deleted
 
-If no commits are found between branches, it displays an error and exits.
+If no commits are found between branches, it displays an error and exits. Don't
+include commits from other branches.
 
 ### 4. Generate PR Title
 
@@ -56,11 +58,43 @@ The PR title is generated from your commit messages:
 
 ### 5. Generate PR Body
 
-Template to use: [template/pr-template.md](./template/pr-template.md)
+The PR body must follow the following template:
 
-The PR body is automatically generated with the following structure:
+```markdown
+## Summary
 
-#### Summary Paragraph (No Header)
+<!-- Descriptive summary with proper paragraph structure -->
+
+### Context
+
+<!-- Context content -->
+
+### Related Issues
+
+<!-- Issue placeholder, showing other related issues -->
+
+---
+
+## Testing
+
+<!-- Testing content -->
+
+---
+
+## Risk/Impact
+
+<!-- Content to show the impact of changes -->
+
+---
+
+### Visuals
+
+<!-- Visual placeholder -->
+```
+
+It's automatically generated with the following structure:
+
+#### Summary Paragraph
 
 - First paragraph directly describes the changes
 - Created from the first 2-3 commit messages
@@ -115,6 +149,7 @@ Finally, the command uses GitHub CLI to create the PR:
 - Handles any GitHub API errors gracefully
 
 **Error handling:**
+
 - Missing target branch → use default branch
 - Authentication failure → prompt user to authenticate
 - Invalid branch → suggest running `/gh/get-branches`
