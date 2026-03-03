@@ -11,12 +11,15 @@ A curated collection of AI skills and commands for software development, integra
 - **fastify-best-practices**: Comprehensive best practices for Fastify development
 - **git-conventional-commits**: Conventional Commits specification guide for commit messages, changelogs, and semantic versioning
 - **agent-md-refactor**: Refactor bloated AGENTS.md, CLAUDE.md, or similar agent instruction files following progressive disclosure principles
+- **github-pr-automation**: Best practices for creating pull requests, branch naming conventions, and PR workflow guidelines
 
 ## Commands
 
 - **commit**: Commit staged or unstaged changes using Conventional Commits
 - **proceed**: Proceed with execution using the build agent
 - **update-context**: Update context for AI agents
+- **gh/pr-create**: Create GitHub pull request with target branch argument
+- **gh/get-branches**: List available branches in repository
 
 ## Configuration
 
@@ -29,3 +32,38 @@ The registry includes MCP servers for:
 ## Usage
 
 Import these skills and commands in OpenCode to leverage best practices for your development workflow.
+
+## GitHub Authentication
+
+To use the GitHub automation commands:
+
+1. **Install GitHub CLI**:
+   - macOS: `brew install gh`
+   - Windows: `winget install --id GitHub.cli`
+   - Linux: See [GitHub CLI documentation](https://cli.github.com/)
+
+2. **Authenticate**:
+   ```bash
+   # SSH authentication (recommended)
+   gh auth login --ssh
+
+   # Or HTTPS authentication
+   gh auth login
+   ```
+
+3. **Verify authentication**:
+   ```bash
+   gh auth status
+   ```
+
+4. **Create pull requests**:
+    ```bash
+    # List available branches
+    /gh/get-branches
+
+    # Create PR to default branch
+    /gh/pr-create
+
+    # Create PR to specific branch
+    /gh/pr-create base:dev
+    ```
