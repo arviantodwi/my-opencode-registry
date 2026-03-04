@@ -9,6 +9,7 @@
     }
   },
   "default_agent": "plan",
+  "small_model": "google/gemini-1.5-flash-8b",
   "watcher": {
     "ignore": [
       ".git/**",
