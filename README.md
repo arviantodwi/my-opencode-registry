@@ -4,30 +4,31 @@ A curated collection of AI skills and commands for software development, integra
 
 ## Skills
 
+- **agent-md-refactor**: Refactor bloated AGENTS.md, CLAUDE.md, or similar agent instruction files following progressive disclosure principles
+- **expo-app-design**: Build robust, productivity apps with Expo. Comprehensive guide covering UI components, navigation, styling, API routes, data fetching, development builds, Tailwind CSS, and web code integration.
+- **fastify-best-practices**: Comprehensive best practices for Fastify development
+- **git-conventional-commits**: Conventional Commits specification guide for commit messages, changelogs, and semantic versioning
+- **github-pr-automation**: Best practices for creating pull requests, branch naming conventions, and PR workflow guidelines
 - **next-best-practices**: Next.js best practices - file conventions, RSC boundaries, data patterns, async APIs, metadata, error handling, route handlers, image/font optimization, bundling
 - **react-best-practices**: Vercel Engineering's comprehensive React performance optimization guidelines (57 rules across 8 categories)
 - **react-composition-patterns**: React composition patterns for scaling components, preventing prop proliferation, and building flexible component libraries
 - **typescript-magician**: TypeScript wizard specializing in advanced type systems, complex generics, and eliminating `any` types
-- **fastify-best-practices**: Comprehensive best practices for Fastify development
-- **git-conventional-commits**: Conventional Commits specification guide for commit messages, changelogs, and semantic versioning
-- **agent-md-refactor**: Refactor bloated AGENTS.md, CLAUDE.md, or similar agent instruction files following progressive disclosure principles
-- **github-pr-automation**: Best practices for creating pull requests, branch naming conventions, and PR workflow guidelines
 
 ## Commands
 
 - **commit**: Commit staged or unstaged changes using Conventional Commits
+- **gh/get-branches**: List available branches in repository
+- **gh/pr-create**: Create GitHub pull request with target branch argument
 - **proceed**: Proceed with execution using the build agent
 - **update-context**: Update context for AI agents
-- **gh/pr-create**: Create GitHub pull request with target branch argument
-- **gh/get-branches**: List available branches in repository
 
 ## Configuration
 
 The registry includes MCP servers for:
-- Zod (validation library)
 - Context7 (library documentation)
 - Figma (design tool)
 - Z.AI API (AI services)
+- Zod (validation library)
 
 ## Usage
 
