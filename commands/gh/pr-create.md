@@ -89,7 +89,7 @@ The PR body must follow the following template:
 
 ### Visuals
 
-<!-- Visual placeholder -->
+<!-- Visual placeholder, optional -->
 ```
 
 It's automatically generated with the following structure:
@@ -110,7 +110,19 @@ Explains why changes were made by grouping commits by type:
 - **Documentation:** Lists all documentation updates
 - **Refactorings:** Lists all code refactorings
 
-Each commit is shown as a bullet point.
+Each commit is shown as a bullet point. Don't put commit message at the end of list item.
+
+**Bad**
+```
+* Features:
+  - Add typeahead search dropdown component (feat(59): add typeahead search dropdown component)
+```
+
+**Good**
+```
+* Features:
+  - Add typeahead search dropdown component
+```
 
 #### Testing Section
 
@@ -126,8 +138,9 @@ Detects and reports test-related changes:
 Assesses potential impact of changes:
 
 - **High Risk:** Core files, config files, or middleware were modified
+- **Medium Risk:** API files or services files were modified
 - **Low Risk:** Only application code files were modified
-- Lists specific risky files if detected
+- Lists specific risky files if detected, only when risk is medium or high
 - Provides appropriate testing recommendations
 
 #### Visuals Section
@@ -136,8 +149,8 @@ Detects UI-related changes:
 
 - Identifies UI component files (CSS, JSX, TSX, Vue, HTML, SCSS, Sass)
 - Lists modified UI files with count
-- Adds placeholder for screenshots or GIFs if UI changes exist
-- Shows "No UI changes" if none detected
+- Write `*TBD*` as a placeholder for screenshots or GIFs if UI changes exist.
+- Omit visuals section if none detected
 
 ### 6. Create Pull Request
 

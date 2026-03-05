@@ -3,7 +3,7 @@ description: List available branches in repository
 agent: general
 model: opencode/minimax-m2.5-free
 subtask: false
-version: "1.0.0"
+version: "1.0.1"
 author: "Arvianto D. Wicaksono <dev@arvian.to>"
 ---
 
