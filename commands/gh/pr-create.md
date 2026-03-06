@@ -1,8 +1,8 @@
 ---
-description: Create GitHub pull request with target branch argument
-agent: general
+description: Create GitHub pull request
+# agent: general
 model: zai-coding-plan/glm-4.7-flash
-subtask: true
+subtask: false
 version: "1.0.0"
 author: "Arvianto D. Wicaksono <dev@arvian.to>"
 ---
