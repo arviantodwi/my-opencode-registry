@@ -2,7 +2,7 @@
 description: Create GitHub pull request with target branch argument
 agent: general
 model: opencode/minimax-m2.5-free
-subtask: false
+subtask: true
 version: "1.0.0"
 author: "Arvianto D. Wicaksono <dev@arvian.to>"
 ---
@@ -96,7 +96,7 @@ The PR body must follow the following template:
 
 ### Visuals
 
-<!-- Visual placeholder, optional -->
+<!-- Visual placeholder, optional, omitted if no UI changes -->
 ```
 
 It's automatically generated with the following structure:
@@ -156,8 +156,8 @@ Detects UI-related changes:
 
 - Identifies UI component files (CSS, JSX, TSX, Vue, HTML, SCSS, Sass)
 - Lists modified UI files with count
+- Omit the visuals section entirely if no UI files were modified
 - Write `*TBD*` as a placeholder for screenshots or GIFs if UI changes exist.
-- Omit visuals section if none detected
 
 ### 6. Create Pull Request
 
@@ -165,7 +165,7 @@ Finally, the command uses GitHub CLI to create the PR:
 
 - Creates PR from your current branch to target branch
 - Uses the auto-generated title (80-100 chars, title case)
-- Uses the auto-generated body with all 5 sections
+- Uses the auto-generated body (Visuals section omitted if no UI changes)
 - Includes `--draft` flag if draft argument was provided
 - Handles any GitHub API errors gracefully
 
@@ -175,3 +175,4 @@ Finally, the command uses GitHub CLI to create the PR:
 - Authentication failure → prompt user to authenticate
 - Invalid branch → suggest running `/gh/get-branches`
 - No changes to commit → ask user to stage changes first
+- Draft mode → include `--draft` flag when creating PR
