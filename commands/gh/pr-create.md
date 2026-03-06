@@ -137,10 +137,10 @@ The PR body must follow the following template:
 <!-- Content to show the impact of changes -->
 
 ---
-
+<!-- Remove visuals section if no UI changes -->
 ### Visuals
 
-<!-- Visual placeholder, optional, omitted if no UI changes -->
+<!-- Visual placeholder -->
 ```
 
 It's automatically generated with the following structure:
@@ -211,11 +211,11 @@ Finally, the command uses GitHub CLI to create the PR:
 
 ```bash
 # Base command structure
-gh pr create --base <target> --title "<title>" --body "<body>" [flags]
+gh pr create [flags] --base <target> --title "<title>" --body "<body>"
 
 # Add --draft flag only if isDraft=true
 if [ "$isDraft" = true ]; then
-  gh pr create --base "$target" --title "$title" --body "$body" --draft
+  gh pr create --draft --base "$target" --title "$title" --body "$body"
 else
   gh pr create --base "$target" --title "$title" --body "$body"
 fi
@@ -234,11 +234,11 @@ fi
 ```bash
 # Example: /gh/pr-create base:dev draft
 # → isDraft=true, target=dev
-# → Executed: gh pr create --base dev --title "..." --body "..." --draft
+# → Executed: gh pr create --draft --base dev --title "..." --body "..."
 
 # Example: /gh/pr-create draft
 # → isDraft=true, target=main (default)
-# → Executed: gh pr create --base main --title "..." --body "..." --draft
+# → Executed: gh pr create --draft --base main --title "..." --body "..."
 
 # Example: /gh/pr-create
 # → isDraft=false, target=main (default)
