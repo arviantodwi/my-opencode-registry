@@ -249,7 +249,7 @@ fi
 
 - Missing target branch → use default branch
 - Invalid `base:` argument (no value after prefix) → show error and suggest correct format
-- Invalid target branch name → suggest running `/gh/get-branches` to list available branches
+- Invalid target branch name → suggest running `git branch -r` to list available remote branches
 - Authentication failure → prompt user to authenticate with `gh auth login`
 - No changes to commit → ask user to stage changes first with `git add`
 - **Draft mode argument validation** → ensure "draft" is not combined with invalid target branch format
