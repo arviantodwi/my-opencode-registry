@@ -7,15 +7,7 @@ version: "1.0.0"
 author: "Arvianto D. Wicaksono <dev@arvian.to>"
 ---
 
-Create a pull request for the current repository using GitHub CLI. Base command
-is `gh pr create $ARGUMENTS`.
-
-<!-- **Parse ARGUMENTS:**
-
-- `ARGUMENTS` empty → target: default branch
-- `ARGUMENTS="base:dev"` → target: dev branch
-- `ARGUMENTS="draft"` → creates draft PR
-- `ARGUMENTS="base:dev draft"` → creates draft PR targeting dev branch -->
+Create a pull request for the current repository using GitHub CLI.
 
 **Execute:**
 
@@ -28,64 +20,6 @@ First, it checks that GitHub CLI (gh) is installed and that you're authenticated
 - Checks if `gh` is available in your system
 - Verifies you're logged in to GitHub
 - Shows helpful error messages if prerequisites aren't met
-
-<!-- ### 2. Parse Command Arguments
-
-**Parse ARGUMENTS to extract optional arguments:**
-
-```bash
-# Example: ARGUMENTS="base:dev draft"
-# Parse logic:
-# 1. Check for "draft" word presence → set isDraft=true
-# 2. Check for "base:" prefix → extract target branch
-# 3. Default values: isDraft=false, target=main
-```
-
-The command accepts optional arguments in ARGUMENTS:
-
-- **Target branch:** using the `base:` prefix
-  - Default target: `main` (if ARGUMENTS empty)
-  - With argument: `base:dev` targets the `dev` branch
-  - Example: `base:develop` targets the `develop` branch
-  - **Implementation:** Extract after "base:" prefix from ARGUMENTS
-- **Draft mode:** using the `draft` argument
-  - Creates PR as draft
-  - Example: `draft` creates draft PR
-  - Combined: `base:dev draft` creates draft PR targeting dev branch
-  - **Implementation:** Check if "draft" appears anywhere in ARGUMENTS, set `isDraft=true`
-
-**Argument parsing algorithm:**
-
-```bash
-# Parse ARGUMENTS to extract arguments
-function parse_arguments() {
-  local arguments="$ARGUMENTS"
-  local isDraft=false
-  local target="main"  # Default branch
-
-  # Check for draft mode
-  if [[ "$arguments" == *"draft"* ]]; then
-    isDraft=true
-  fi
-
-  # Check for base: prefix and extract target branch
-  if [[ "$arguments" == *"base:"* ]]; then
-    # Extract value after "base:" prefix
-    target=$(echo "$arguments" | grep -oP 'base:\K[^ ]+' | head -1)
-  fi
-
-  echo "isDraft=$isDraft"
-  echo "target=$target"
-}
-```
-
-**Usage in implementation:**
-
-- Parse `ARGUMENTS` at the beginning of execution
-- Store parsed values in variables (`isDraft`, `target`)
-- Use these variables when constructing the `gh pr create` command
-- Apply `--draft` flag conditionally based on `isDraft` value
-- Use `target` variable for `--base` parameter -->
 
 ### 2. Get Current Branch Information
 
@@ -214,59 +148,19 @@ Finally, the command uses GitHub CLI to create the PR:
 
 **Build and execute the gh pr create command:**
 
-<!-- # Base command structure -->
 ```bash
 gh pr create $ARGUMENTS --title "<title>" --body "<body>"
 ```
-<!-- # Add --draft flag only if isDraft=true
-if [ "$isDraft" = true ]; then
-  gh pr create --draft --base "$target" --title "$title" --body "$body"
-else
-  gh pr create --base "$target" --title "$title" --body "$body"
-fi -->
 
 **Execution steps:**
 
-<!-- - Parse `ARGUMENTS` for isDraft flag and target branch -->
-<!-- - Creates PR from your current branch to target branch -->
 - Uses the auto-generated title (80-100 chars, title case)
 - Uses the auto-generated body (Visuals section omitted if no UI changes)
-<!-- - **Includes `--draft` flag only if "draft" was present in ARGUMENTS** -->
 - Handles any GitHub API errors gracefully
-
-<!-- **Argument usage in command:** -->
-
-<!-- ```bash
-# Example: ARGUMENTS="base:dev draft"
-# → isDraft=true, target=dev
-# → Executed: gh pr create --draft --base dev --title "..." --body "..."
-
-# Example: ARGUMENTS="draft"
-# → isDraft=true, target=main (default)
-# → Executed: gh pr create --draft --base main --title "..." --body "..."
-
-# Example: ARGUMENTS="" (empty)
-# → isDraft=false, target=main (default)
-# → Executed: gh pr create --base main --title "..." --body "..."
-``` -->
 
 **Error handling:**
 
-<!-- - Missing target branch → use default branch -->
-<!-- - Invalid `base:` argument (no value after prefix) → show error and suggest correct format -->
 - Invalid target branch name → suggest running `git branch -r` to list available remote branches
 - Authentication failure → prompt user to authenticate with `gh auth login`
 - No changes to commit → ask user to stage changes first with `git add`
-<!-- - **Draft mode argument validation** → ensure "draft" in ARGUMENTS is not combined with invalid target branch format -->
-<!-- - **Argument parsing failures** → show which argument in ARGUMENTS could not be parsed and suggest correct format -->
 - **GitHub API errors** → display specific error message from GitHub CLI
-
-<!-- **Argument validation rules:**
-
-```
-- "draft" can appear anywhere in ARGUMENTS
-- "base:" must be followed by a valid branch name
-- No spaces allowed between "base:" and branch name (e.g., "base: dev" is invalid)
-- Branch names must exist in remote repository
-- Draft argument is optional, can be combined with base: or used alone
-``` -->
