@@ -166,6 +166,7 @@ Finally, the command uses GitHub CLI to create the PR:
 - Creates PR from your current branch to target branch
 - Uses the auto-generated title (80-100 chars, title case)
 - Uses the auto-generated body (Visuals section omitted if no UI changes)
+- Includes `--draft` flag if draft argument was provided
 - Handles any GitHub API errors gracefully
 
 **Error handling:**
