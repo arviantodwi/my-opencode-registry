@@ -1,9 +1,9 @@
 ---
 description: Create GitHub pull request
 agent: general
-model: zai-coding-plan/glm-4.7-flash
+model: opencode/minimax-m2.5-free
 subtask: true
-version: "1.0.0"
+version: "2.0.0"
 author: "Arvianto D. Wicaksono <dev@arvian.to>"
 ---
 
@@ -138,15 +138,15 @@ Assesses potential impact of changes:
 Detects UI-related changes:
 
 - Identifies UI component files (CSS, JSX, TSX, Vue, HTML, SCSS, Sass)
-- Lists modified UI files with count
-- Remove the visuals section entirely if no UI files were modified
-- Write `*TBD*` as a placeholder for screenshots or GIFs if UI changes exist.
+* If UI changes NOT EXIST:
+  - **DO NOT INCLUDE the visuals section entirely**
+* If UI changes exist:
+  - Lists modified UI files with count
+  - Write `*TBD*` as a placeholder for screenshots or GIFs.
 
 ### 5. Create Pull Request
 
-Finally, the command uses GitHub CLI to create the PR:
-
-**Build and execute the gh pr create command:**
+Finally, you use GitHub CLI to create the PR:
 
 ```bash
 gh pr create $ARGUMENTS --title "<title>" --body "<body>"
@@ -154,7 +154,7 @@ gh pr create $ARGUMENTS --title "<title>" --body "<body>"
 
 **Execution steps:**
 
-- Uses the auto-generated title (80-100 chars, title case)
+- Uses the auto-generated title (80-100 chars, with Title Case)
 - Uses the auto-generated body (Visuals section omitted if no UI changes)
 - Handles any GitHub API errors gracefully
 
