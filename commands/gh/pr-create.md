@@ -13,6 +13,8 @@ Create a pull request for the current repository using GitHub CLI.
 
 - `/gh/pr-create` → target: default branch
 - `/gh/pr-create base:dev` → target: dev branch
+- `/gh/pr-create draft` → creates draft PR
+- `/gh/pr-create base:dev draft` → creates draft PR targeting dev branch
 
 **Execute:**
 
@@ -28,11 +30,16 @@ First, it checks that GitHub CLI (gh) is installed and that you're authenticated
 
 ### 2. Parse Command Arguments
 
-The command accepts an optional target branch argument using the `base:` prefix:
+The command accepts optional arguments:
 
-- Default target: `main` (if no argument provided)
-- With argument: `/gh/pr-create base:dev` targets the `dev` branch
-- Example: `/gh/pr-create base:develop` targets the `develop` branch
+- **Target branch:** using the `base:` prefix
+  - Default target: `main` (if no argument provided)
+  - With argument: `/gh/pr-create base:dev` targets the `dev` branch
+  - Example: `/gh/pr-create base:develop` targets the `develop` branch
+- **Draft mode:** using the `draft` argument
+  - Creates PR as draft
+  - Example: `/gh/pr-create draft` creates draft PR
+  - Combined: `/gh/pr-create base:dev draft` creates draft PR targeting dev branch
 
 ### 3. Get Current Branch Information
 
@@ -159,6 +166,7 @@ Finally, the command uses GitHub CLI to create the PR:
 - Creates PR from your current branch to target branch
 - Uses the auto-generated title (80-100 chars, title case)
 - Uses the auto-generated body with all 5 sections
+- Includes `--draft` flag if draft argument was provided
 - Handles any GitHub API errors gracefully
 
 **Error handling:**
