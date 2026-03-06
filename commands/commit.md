@@ -2,7 +2,7 @@
 description: Commit staged or unstaged changes using Conventional Commits
 agent: general
 model: opencode/minimax-m2.5-free
-subtask: false
+subtask: true
 ---
 
 Use the git-conventional-commits skill to commit staged or unstaged changes within the active branch. Determine whether to commit changes as a single commit or multiple commits based on clarity.

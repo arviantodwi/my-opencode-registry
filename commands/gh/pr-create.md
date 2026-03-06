@@ -156,8 +156,8 @@ Detects UI-related changes:
 
 - Identifies UI component files (CSS, JSX, TSX, Vue, HTML, SCSS, Sass)
 - Lists modified UI files with count
+- Omit visuals section if detected modified UI files is none
 - Write `*TBD*` as a placeholder for screenshots or GIFs if UI changes exist.
-- Omit visuals section if none detected
 
 ### 6. Create Pull Request
 
