@@ -1,20 +1,21 @@
 ---
 description: Create GitHub pull request
-# agent: general
+agent: general
 model: zai-coding-plan/glm-4.7-flash
-subtask: false
+subtask: true
 version: "1.0.0"
 author: "Arvianto D. Wicaksono <dev@arvian.to>"
 ---
 
-Create a pull request for the current repository using GitHub CLI.
+Create a pull request for the current repository using GitHub CLI. Base command
+is `gh pr create $ARGUMENTS`.
 
-**Parse $ARGUMENTS:**
+<!-- **Parse ARGUMENTS:**
 
-- `$ARGUMENTS` empty → target: default branch
-- `$ARGUMENTS="base:dev"` → target: dev branch
-- `$ARGUMENTS="draft"` → creates draft PR
-- `$ARGUMENTS="base:dev draft"` → creates draft PR targeting dev branch
+- `ARGUMENTS` empty → target: default branch
+- `ARGUMENTS="base:dev"` → target: dev branch
+- `ARGUMENTS="draft"` → creates draft PR
+- `ARGUMENTS="base:dev draft"` → creates draft PR targeting dev branch -->
 
 **Execute:**
 
@@ -28,35 +29,35 @@ First, it checks that GitHub CLI (gh) is installed and that you're authenticated
 - Verifies you're logged in to GitHub
 - Shows helpful error messages if prerequisites aren't met
 
-### 2. Parse Command Arguments
+<!-- ### 2. Parse Command Arguments
 
-**Parse $ARGUMENTS to extract optional arguments:**
+**Parse ARGUMENTS to extract optional arguments:**
 
 ```bash
-# Example: $ARGUMENTS="base:dev draft"
+# Example: ARGUMENTS="base:dev draft"
 # Parse logic:
 # 1. Check for "draft" word presence → set isDraft=true
 # 2. Check for "base:" prefix → extract target branch
 # 3. Default values: isDraft=false, target=main
 ```
 
-The command accepts optional arguments in $ARGUMENTS:
+The command accepts optional arguments in ARGUMENTS:
 
 - **Target branch:** using the `base:` prefix
-  - Default target: `main` (if $ARGUMENTS empty)
+  - Default target: `main` (if ARGUMENTS empty)
   - With argument: `base:dev` targets the `dev` branch
   - Example: `base:develop` targets the `develop` branch
-  - **Implementation:** Extract after "base:" prefix from $ARGUMENTS
+  - **Implementation:** Extract after "base:" prefix from ARGUMENTS
 - **Draft mode:** using the `draft` argument
   - Creates PR as draft
   - Example: `draft` creates draft PR
   - Combined: `base:dev draft` creates draft PR targeting dev branch
-  - **Implementation:** Check if "draft" appears anywhere in $ARGUMENTS, set `isDraft=true`
+  - **Implementation:** Check if "draft" appears anywhere in ARGUMENTS, set `isDraft=true`
 
 **Argument parsing algorithm:**
 
 ```bash
-# Parse $ARGUMENTS to extract arguments
+# Parse ARGUMENTS to extract arguments
 function parse_arguments() {
   local arguments="$ARGUMENTS"
   local isDraft=false
@@ -79,13 +80,14 @@ function parse_arguments() {
 ```
 
 **Usage in implementation:**
-- Parse `$ARGUMENTS` at the beginning of execution
+
+- Parse `ARGUMENTS` at the beginning of execution
 - Store parsed values in variables (`isDraft`, `target`)
 - Use these variables when constructing the `gh pr create` command
 - Apply `--draft` flag conditionally based on `isDraft` value
-- Use `target` variable for `--base` parameter
+- Use `target` variable for `--base` parameter -->
 
-### 3. Get Current Branch Information
+### 2. Get Current Branch Information
 
 The command identifies:
 
@@ -96,7 +98,7 @@ The command identifies:
 If no commits are found between branches, it displays an error and exits. Don't
 include commits from other branches.
 
-### 4. Generate PR Title
+### 3. Generate PR Title
 
 The PR title is generated from your commit messages:
 
@@ -107,7 +109,7 @@ The PR title is generated from your commit messages:
 - Ensures the title is between 80-100 characters
 - Falls back to the first commit message if needed
 
-### 5. Generate PR Body
+### 4. Generate PR Body
 
 The PR body must follow the following template:
 
@@ -137,6 +139,7 @@ The PR body must follow the following template:
 <!-- Content to show the impact of changes -->
 
 ---
+
 <!-- Remove visuals section if no UI changes -->
 ### Visuals
 
@@ -164,12 +167,14 @@ Explains why changes were made by grouping commits by type:
 Each commit is shown as a bullet point. Don't put commit message at the end of list item.
 
 **Bad**
+
 ```
 * Features:
   - Add typeahead search dropdown component (feat(59): add typeahead search dropdown component)
 ```
 
 **Good**
+
 ```
 * Features:
   - Add typeahead search dropdown component
@@ -200,67 +205,68 @@ Detects UI-related changes:
 
 - Identifies UI component files (CSS, JSX, TSX, Vue, HTML, SCSS, Sass)
 - Lists modified UI files with count
-- Omit the visuals section entirely if no UI files were modified
+- Remove the visuals section entirely if no UI files were modified
 - Write `*TBD*` as a placeholder for screenshots or GIFs if UI changes exist.
 
-### 6. Create Pull Request
+### 5. Create Pull Request
 
 Finally, the command uses GitHub CLI to create the PR:
 
 **Build and execute the gh pr create command:**
 
+<!-- # Base command structure -->
 ```bash
-# Base command structure
-gh pr create [flags] --base <target> --title "<title>" --body "<body>"
-
-# Add --draft flag only if isDraft=true
+gh pr create $ARGUMENTS --title "<title>" --body "<body>"
+```
+<!-- # Add --draft flag only if isDraft=true
 if [ "$isDraft" = true ]; then
   gh pr create --draft --base "$target" --title "$title" --body "$body"
 else
   gh pr create --base "$target" --title "$title" --body "$body"
-fi
-```
+fi -->
 
 **Execution steps:**
 
-- Parse `$ARGUMENTS` for isDraft flag and target branch
-- Creates PR from your current branch to target branch
+<!-- - Parse `ARGUMENTS` for isDraft flag and target branch -->
+<!-- - Creates PR from your current branch to target branch -->
 - Uses the auto-generated title (80-100 chars, title case)
 - Uses the auto-generated body (Visuals section omitted if no UI changes)
-- **Includes `--draft` flag only if "draft" was present in $ARGUMENTS**
+<!-- - **Includes `--draft` flag only if "draft" was present in ARGUMENTS** -->
 - Handles any GitHub API errors gracefully
 
-**Argument usage in command:**
-```bash
-# Example: $ARGUMENTS="base:dev draft"
+<!-- **Argument usage in command:** -->
+
+<!-- ```bash
+# Example: ARGUMENTS="base:dev draft"
 # → isDraft=true, target=dev
 # → Executed: gh pr create --draft --base dev --title "..." --body "..."
 
-# Example: $ARGUMENTS="draft"
+# Example: ARGUMENTS="draft"
 # → isDraft=true, target=main (default)
 # → Executed: gh pr create --draft --base main --title "..." --body "..."
 
-# Example: $ARGUMENTS="" (empty)
+# Example: ARGUMENTS="" (empty)
 # → isDraft=false, target=main (default)
 # → Executed: gh pr create --base main --title "..." --body "..."
-```
+``` -->
 
 **Error handling:**
 
-- Missing target branch → use default branch
-- Invalid `base:` argument (no value after prefix) → show error and suggest correct format
+<!-- - Missing target branch → use default branch -->
+<!-- - Invalid `base:` argument (no value after prefix) → show error and suggest correct format -->
 - Invalid target branch name → suggest running `git branch -r` to list available remote branches
 - Authentication failure → prompt user to authenticate with `gh auth login`
 - No changes to commit → ask user to stage changes first with `git add`
-- **Draft mode argument validation** → ensure "draft" in $ARGUMENTS is not combined with invalid target branch format
-- **Argument parsing failures** → show which argument in $ARGUMENTS could not be parsed and suggest correct format
+<!-- - **Draft mode argument validation** → ensure "draft" in ARGUMENTS is not combined with invalid target branch format -->
+<!-- - **Argument parsing failures** → show which argument in ARGUMENTS could not be parsed and suggest correct format -->
 - **GitHub API errors** → display specific error message from GitHub CLI
 
-**Argument validation rules:**
+<!-- **Argument validation rules:**
+
 ```
-- "draft" can appear anywhere in $ARGUMENTS
+- "draft" can appear anywhere in ARGUMENTS
 - "base:" must be followed by a valid branch name
 - No spaces allowed between "base:" and branch name (e.g., "base: dev" is invalid)
 - Branch names must exist in remote repository
 - Draft argument is optional, can be combined with base: or used alone
-```
+``` -->
