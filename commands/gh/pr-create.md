@@ -96,7 +96,7 @@ The PR body must follow the following template:
 
 ### Visuals
 
-<!-- Visual placeholder, optional -->
+<!-- Visual placeholder, optional, omitted if no UI changes -->
 ```
 
 It's automatically generated with the following structure:
@@ -156,7 +156,7 @@ Detects UI-related changes:
 
 - Identifies UI component files (CSS, JSX, TSX, Vue, HTML, SCSS, Sass)
 - Lists modified UI files with count
-- Omit visuals section if detected modified UI files is none
+- Omit the visuals section entirely if no UI files were modified
 - Write `*TBD*` as a placeholder for screenshots or GIFs if UI changes exist.
 
 ### 6. Create Pull Request
@@ -165,7 +165,7 @@ Finally, the command uses GitHub CLI to create the PR:
 
 - Creates PR from your current branch to target branch
 - Uses the auto-generated title (80-100 chars, title case)
-- Uses the auto-generated body with all 5 sections
+- Uses the auto-generated body (Visuals section omitted if no UI changes)
 - Handles any GitHub API errors gracefully
 
 **Error handling:**
