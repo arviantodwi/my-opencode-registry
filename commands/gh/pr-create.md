@@ -7,19 +7,23 @@ version: "2.0.0"
 author: "Arvianto D. Wicaksono <dev@arvian.to>"
 ---
 
-Create a pull request for the current repository using GitHub CLI.
-
-**Execute:**
-
-The command executes the following steps:
+Create a pull request for the current repository using GitHub CLI by referring to the following steps:
 
 ### 1. Verify Prerequisites
 
-First, it checks that GitHub CLI (gh) is installed and that you're authenticated:
+Check that GitHub CLI (gh) is installed in the system.
 
-- Checks if `gh` is available in your system
-- Verifies you're logged in to GitHub
-- Shows helpful error messages if prerequisites aren't met
+```bash
+gh --version
+```
+
+Verifies you're logged in to GitHub.
+
+```bash
+gh auth status --active --hostname github.com
+```
+
+Shows helpful error messages if prerequisites aren't met
 
 ### 2. Get Current Branch Information
 
