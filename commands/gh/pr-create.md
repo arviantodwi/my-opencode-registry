@@ -1,7 +1,7 @@
 ---
 description: Create GitHub pull request with target branch argument
 agent: general
-model: opencode/minimax-m2.5-free
+model: zai-coding-plan/glm-4.7-flash
 subtask: true
 version: "1.0.0"
 author: "Arvianto D. Wicaksono <dev@arvian.to>"
