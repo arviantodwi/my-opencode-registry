@@ -1,5 +1,7 @@
 ---
-description: Create GitHub pull request
+description: >-
+  Create GitHub pull request with generated title and body. Accept --draft and
+  --base arguments.
 agent: general
 model: opencode/minimax-m2.5-free
 subtask: true
