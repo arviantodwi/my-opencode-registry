@@ -43,7 +43,7 @@ The PR title is generated from your commit messages:
 - Extracts action verbs (add, fix, improve, etc.) from commits
 - Identifies key nouns (authentication, security, performance, etc.)
 - Combines them into a comprehensive, concise title
-- Applies title case formatting (like paper titles)
+- Applies **Title Case** formatting
 - Ensures the title is between 80-100 characters
 - Falls back to the first commit message if needed
 
@@ -156,13 +156,7 @@ Finally, you use GitHub CLI to create the PR:
 gh pr create $ARGUMENTS --title "<title>" --body "<body>"
 ```
 
-**Execution steps:**
-
-- Uses the auto-generated title (80-100 chars, with Title Case)
-- Uses the auto-generated body (Visuals section omitted if no UI changes)
-- Handles any GitHub API errors gracefully
-
-**Error handling:**
+Handles any GitHub API errors gracefully:
 
 - Invalid target branch name → suggest running `git branch -r` to list available remote branches
 - Authentication failure → prompt user to authenticate with `gh auth login`
