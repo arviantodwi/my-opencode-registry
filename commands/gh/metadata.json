@@ -1,16 +1,12 @@
 {
-  "version": "1.0.1",
+  "version": "2.0.0",
   "author": "Arvianto D. Wicaksono <dev@arvian.to>",
   "created": "2026-03-02",
-  "description": "GitHub automation commands for pull request creation and branch management",
+  "description": "GitHub automation commands",
   "commands": [
     {
       "name": "pr-create",
-      "description": "Create GitHub pull request with target branch argument"
-    },
-    {
-      "name": "get-branches",
-      "description": "List available branches in repository"
+      "description": "Create GitHub pull request with generated title and body. Accept --draft and --base arguments."
     }
   ]
 }

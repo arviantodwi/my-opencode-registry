@@ -1,47 +1,33 @@
 ---
-description: Create GitHub pull request with target branch argument
+description: >-
+  Create GitHub pull request with generated title and body. Accept --draft and
+  --base arguments.
 agent: general
 model: opencode/minimax-m2.5-free
 subtask: true
-version: "1.0.0"
+version: "2.0.0"
 author: "Arvianto D. Wicaksono <dev@arvian.to>"
 ---
 
-Create a pull request for the current repository using GitHub CLI.
-
-**Parse arguments:**
-
-- `/gh/pr-create` → target: default branch
-- `/gh/pr-create base:dev` → target: dev branch
-- `/gh/pr-create draft` → creates draft PR
-- `/gh/pr-create base:dev draft` → creates draft PR targeting dev branch
-
-**Execute:**
-
-The command executes the following steps:
+Create a pull request for the current repository using GitHub CLI by referring to the following steps:
 
 ### 1. Verify Prerequisites
 
-First, it checks that GitHub CLI (gh) is installed and that you're authenticated:
+Check that GitHub CLI (gh) is installed in the system.
 
-- Checks if `gh` is available in your system
-- Verifies you're logged in to GitHub
-- Shows helpful error messages if prerequisites aren't met
+```bash
+gh --version
+```
 
-### 2. Parse Command Arguments
+Verifies you're logged in to GitHub.
 
-The command accepts optional arguments:
+```bash
+gh auth status --active --hostname github.com
+```
 
-- **Target branch:** using the `base:` prefix
-  - Default target: `main` (if no argument provided)
-  - With argument: `/gh/pr-create base:dev` targets the `dev` branch
-  - Example: `/gh/pr-create base:develop` targets the `develop` branch
-- **Draft mode:** using the `draft` argument
-  - Creates PR as draft
-  - Example: `/gh/pr-create draft` creates draft PR
-  - Combined: `/gh/pr-create base:dev draft` creates draft PR targeting dev branch
+Shows helpful error messages if prerequisites aren't met
 
-### 3. Get Current Branch Information
+### 2. Get Current Branch Information
 
 The command identifies:
 
@@ -52,18 +38,18 @@ The command identifies:
 If no commits are found between branches, it displays an error and exits. Don't
 include commits from other branches.
 
-### 4. Generate PR Title
+### 3. Generate PR Title
 
 The PR title is generated from your commit messages:
 
 - Extracts action verbs (add, fix, improve, etc.) from commits
 - Identifies key nouns (authentication, security, performance, etc.)
 - Combines them into a comprehensive, concise title
-- Applies title case formatting (like paper titles)
+- Applies **Title Case** formatting
 - Ensures the title is between 80-100 characters
 - Falls back to the first commit message if needed
 
-### 5. Generate PR Body
+### 4. Generate PR Body
 
 The PR body must follow the following template:
 
@@ -94,9 +80,10 @@ The PR body must follow the following template:
 
 ---
 
+<!-- Remove visuals section if no UI changes -->
 ### Visuals
 
-<!-- Visual placeholder, optional, omitted if no UI changes -->
+<!-- Visual placeholder -->
 ```
 
 It's automatically generated with the following structure:
@@ -120,12 +107,14 @@ Explains why changes were made by grouping commits by type:
 Each commit is shown as a bullet point. Don't put commit message at the end of list item.
 
 **Bad**
+
 ```
 * Features:
   - Add typeahead search dropdown component (feat(59): add typeahead search dropdown component)
 ```
 
 **Good**
+
 ```
 * Features:
   - Add typeahead search dropdown component
@@ -155,24 +144,23 @@ Assesses potential impact of changes:
 Detects UI-related changes:
 
 - Identifies UI component files (CSS, JSX, TSX, Vue, HTML, SCSS, Sass)
-- Lists modified UI files with count
-- Omit the visuals section entirely if no UI files were modified
-- Write `*TBD*` as a placeholder for screenshots or GIFs if UI changes exist.
+* If UI changes NOT EXIST:
+  - **DO NOT INCLUDE the visuals section entirely**
+* If UI changes exist:
+  - Lists modified UI files with count
+  - Write `*TBD*` as a placeholder for screenshots or GIFs.
 
-### 6. Create Pull Request
+### 5. Create Pull Request
 
-Finally, the command uses GitHub CLI to create the PR:
+Finally, you use GitHub CLI to create the PR:
 
-- Creates PR from your current branch to target branch
-- Uses the auto-generated title (80-100 chars, title case)
-- Uses the auto-generated body (Visuals section omitted if no UI changes)
-- Includes `--draft` flag if draft argument was provided
-- Handles any GitHub API errors gracefully
+```bash
+gh pr create $ARGUMENTS --title "<title>" --body "<body>"
+```
 
-**Error handling:**
+Handles any GitHub API errors gracefully:
 
-- Missing target branch → use default branch
-- Authentication failure → prompt user to authenticate
-- Invalid branch → suggest running `/gh/get-branches`
-- No changes to commit → ask user to stage changes first
-- Draft mode → include `--draft` flag when creating PR
+- Invalid target branch name → suggest running `git branch -r` to list available remote branches
+- Authentication failure → prompt user to authenticate with `gh auth login`
+- No changes to commit → ask user to stage changes first with `git add`
+- **GitHub API errors** → display specific error message from GitHub CLI

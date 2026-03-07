@@ -2,37 +2,38 @@
 
 A curated collection of AI skills and commands for software development, integrated with the OpenCode AI assistant.
 
-## Skills
+## Usage
+
+Import these skills and commands in OpenCode to leverage best practices for your development workflow.
+
+### Skills
 
 - **agent-md-refactor**: Refactor bloated AGENTS.md, CLAUDE.md, or similar agent instruction files following progressive disclosure principles
-- **expo-app-design**: Build robust, productivity apps with Expo. Comprehensive guide covering UI components, navigation, styling, API routes, data fetching, development builds, Tailwind CSS, and web code integration.
+- **changelog-generator**: Automatically creates user-facing changelogs from git commits by analyzing commit history, categorizing changes, and transforming technical commits into clear, customer-friendly release notes.
+- **expo-app-design**: Productively build robust apps with Expo. Comprehensive guide covering UI components, navigation, styling, API routes, data fetching, development builds, Tailwind CSS, and web code integration.
 - **fastify-best-practices**: Comprehensive best practices for Fastify development
 - **git-conventional-commits**: Conventional Commits specification guide for commit messages, changelogs, and semantic versioning
-- **github-pr-automation**: Best practices for creating pull requests, branch naming conventions, and PR workflow guidelines
 - **next-best-practices**: Next.js best practices - file conventions, RSC boundaries, data patterns, async APIs, metadata, error handling, route handlers, image/font optimization, bundling
 - **react-best-practices**: Vercel Engineering's comprehensive React performance optimization guidelines (57 rules across 8 categories)
 - **react-composition-patterns**: React composition patterns for scaling components, preventing prop proliferation, and building flexible component libraries
+- **react-native-best-practices**: React Native best practices for building performant mobile apps. Use when building React Native components, optimizing list performance, implementing animations, or working with native modules.
 - **typescript-magician**: TypeScript wizard specializing in advanced type systems, complex generics, and eliminating `any` types
 
-## Commands
+### Commands
 
 - **commit**: Commit staged or unstaged changes using Conventional Commits
-- **gh/get-branches**: List available branches in repository
-- **gh/pr-create**: Create GitHub pull request with target branch argument
+- **gh/pr-create**: Create GitHub pull request with generated title and body, automatically analyzing commit history and providing comprehensive PR documentation
 - **proceed**: Proceed with execution using the build agent
 - **update-context**: Update context for AI agents
 
 ## Configuration
 
 The registry includes MCP servers for:
+
 - Context7 (library documentation)
 - Figma (design tool)
 - Z.AI API (AI services)
 - Zod (validation library)
-
-## Usage
-
-Import these skills and commands in OpenCode to leverage best practices for your development workflow.
 
 ## GitHub Authentication
 
@@ -56,15 +57,3 @@ To use the GitHub automation commands:
    ```bash
    gh auth status
    ```
-
-4. **Create pull requests**:
-    ```bash
-    # List available branches
-    /gh/get-branches
-
-    # Create PR to default branch
-    /gh/pr-create
-
-    # Create PR to specific branch
-    /gh/pr-create base:dev
-    ```
