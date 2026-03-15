@@ -33,39 +33,9 @@
         "CONTEXT7_API_KEY": "{env:CONTEXT7_API_KEY}"
       }
     },
-    "zai-vision": {
+    "figma-bridge": {
       "type": "local",
-      "command": ["npx", "-y", "@z_ai/mcp-server"],
-      "environment": {
-        "Z_AI_API_KEY": "{env:Z_AI_API_KEY}",
-        "Z_AI_MODE": "ZAI"
-      }
-    },
-    "zai-web-search-prime": {
-      "enabled": false,
-      "type": "remote",
-      "url": "https://api.z.ai/api/mcp/web_search_prime/mcp",
-      "headers": {
-        "Authorization": "Bearer {env:Z_AI_API_KEY}"
-      }
-    },
-    "zai-web-reader": {
-      "enabled": false,
-      "type": "remote",
-      "url": "https://api.z.ai/api/mcp/web_reader/mcp",
-      "headers": {
-        "Authorization": "Bearer {env:Z_AI_API_KEY}"
-      }
-    },
-    "framelink-figma-mcp": {
-      "type": "local",
-      "command": [
-        "npx",
-        "-y",
-        "figma-developer-mcp",
-        "--figma-api-key={env:FIGMA_API_KEY}",
-        "--stdio"
-      ]
+      "command": ["npx", "-y", "@gethopp/figma-mcp-bridge"]
     }
   },
   "plugin": ["@franlol/opencode-md-table-formatter@0.0.3"]
