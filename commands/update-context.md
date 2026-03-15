@@ -1,7 +1,7 @@
 ---
 description: Update the LLM context for modified [files] within the session
 agent: plan
-model: zai-coding-plan/glm-4.7-flash
+model: anthropic/claude-haiku-4-5-20251001
 subtask: false
 ---
 
