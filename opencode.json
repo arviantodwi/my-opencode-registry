@@ -36,6 +36,13 @@
     "figma-bridge": {
       "type": "local",
       "command": ["npx", "-y", "@gethopp/figma-mcp-bridge"]
+    },
+    "TalkToFigma": {
+      "type": "local",
+      "command": [
+        "bunx",
+        "cursor-talk-to-figma-mcp@latest"
+      ]
     }
   },
   "plugin": ["@franlol/opencode-md-table-formatter@0.0.3"]
