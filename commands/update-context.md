@@ -1,7 +1,7 @@
 ---
 description: Update the LLM context for modified [files] within the session
 agent: plan
-model: opencode/minimax-m2.5-free
+model: opencode-go/minimax-m2.7
 subtask: false
 ---
 

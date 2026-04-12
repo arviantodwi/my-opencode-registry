@@ -3,7 +3,7 @@ description: >-
   Create GitHub pull request with generated title and body. Accept --draft and
   --base arguments.
 agent: general
-model: opencode/minimax-m2.5-free
+model: opencode-go/minimax-m2.7
 subtask: true
 version: "2.0.0"
 author: "Arvianto D. Wicaksono <dev@arvian.to>"

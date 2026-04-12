@@ -1,7 +1,7 @@
 ---
 description: Commit staged or unstaged changes using Conventional Commits
 agent: general
-model: opencode/minimax-m2.5-free
+model: opencode-go/minimax-m2.7
 subtask: true
 ---
 
