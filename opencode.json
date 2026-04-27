@@ -18,7 +18,7 @@
       "node_modules/**",
       ".env",
       "package-lock.json",
-      "pnpm-lock.yaml",
+      "pnpm-lock.yaml"
     ]
   },
   "mcp": {
@@ -42,10 +42,13 @@
     },
     "TalkToFigma": {
       "type": "local",
-      "command": [
-        "bunx",
-        "cursor-talk-to-figma-mcp@latest"
-      ]
+      "command": ["bunx", "cursor-talk-to-figma-mcp@latest"],
+      "enabled": false
+    },
+    "Playwright": {
+      "type": "local",
+      "command": ["npx", "@playwright/mcp@latest"],
+      "enabled": false
     }
   },
   "plugin": ["@franlol/opencode-md-table-formatter@0.0.3"]
