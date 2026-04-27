@@ -3,7 +3,7 @@ description: >-
   Create GitHub pull request with generated title and body. Accept --draft and
   --base arguments.
 agent: general
-model: opencode-go/minimax-m2.7
+model: opencode-go/mimo-v2-pro
 subtask: true
 version: "2.0.0"
 author: "Arvianto D. Wicaksono <dev@arvian.to>"
@@ -81,6 +81,7 @@ The PR body must follow the following template:
 ---
 
 <!-- Remove visuals section if no UI changes -->
+
 ### Visuals
 
 <!-- Visual placeholder -->
@@ -144,6 +145,7 @@ Assesses potential impact of changes:
 Detects UI-related changes:
 
 - Identifies UI component files (CSS, JSX, TSX, Vue, HTML, SCSS, Sass)
+
 * If UI changes NOT EXIST:
   - **DO NOT INCLUDE the visuals section entirely**
 * If UI changes exist:
