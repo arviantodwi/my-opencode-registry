@@ -3,7 +3,6 @@ description: >-
   Create GitHub pull request with generated title and body. Accept --draft and
   --base arguments.
 agent: general
-model: opencode-go/mimo-v2-pro
 subtask: true
 version: "2.0.0"
 author: "Arvianto D. Wicaksono <dev@arvian.to>"
