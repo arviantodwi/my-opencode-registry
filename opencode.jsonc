@@ -7,6 +7,18 @@
     "plan": {
       "model": "opencode-go/minimax-m2.7",
     },
+    "paperclip": {
+      "description": "Agent for Paperclip use only",
+      "model": "opencode-go/minimax-m2.5",
+      "steps": 1000,
+      "mode": "all",
+      "permission": {
+        "*": "allow",
+        "external_directory": {
+          "~/.paperclip/*": "allow",
+        },
+      },
+    },
   },
   "default_agent": "plan",
   "small_model": "google/gemini-1.5-flash-8b",
@@ -20,7 +32,6 @@
       "package-lock.json",
       "pnpm-lock.yaml",
     ],
-  },
   },
   "mcp": {
     "inkeep": {
