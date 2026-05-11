@@ -2,11 +2,11 @@
   "$schema": "https://opencode.ai/config.json",
   "agent": {
     "build": {
-      "model": "opencode-go/mimo-v2.5-pro"
+      "model": "opencode-go/mimo-v2.5-pro",
     },
     "plan": {
-      "model": "opencode-go/minimax-m2.7"
-    }
+      "model": "opencode-go/minimax-m2.7",
+    },
   },
   "default_agent": "plan",
   "small_model": "google/gemini-1.5-flash-8b",
@@ -18,38 +18,39 @@
       "node_modules/**",
       ".env",
       "package-lock.json",
-      "pnpm-lock.yaml"
-    ]
+      "pnpm-lock.yaml",
+    ],
+  },
   },
   "mcp": {
     "inkeep": {
       "type": "remote",
       "url": "https://mcp.inkeep.com/zod/mcp",
-      "enabled": false
+      "enabled": false,
     },
     "context7": {
       "type": "remote",
       "url": "https://mcp.context7.com/mcp",
       "headers": {
-        "CONTEXT7_API_KEY": "{env:CONTEXT7_API_KEY}"
+        "CONTEXT7_API_KEY": "{env:CONTEXT7_API_KEY}",
       },
-      "enabled": false
+      "enabled": false,
     },
     "figma-bridge": {
       "type": "local",
       "command": ["npx", "-y", "@gethopp/figma-mcp-bridge"],
-      "enabled": false
+      "enabled": false,
     },
     "TalkToFigma": {
       "type": "local",
       "command": ["bunx", "cursor-talk-to-figma-mcp@latest"],
-      "enabled": false
+      "enabled": false,
     },
     "Playwright": {
       "type": "local",
       "command": ["npx", "@playwright/mcp@latest"],
-      "enabled": false
-    }
+      "enabled": false,
+    },
   },
-  "plugin": ["@franlol/opencode-md-table-formatter@0.0.3"]
+  "plugin": ["@franlol/opencode-md-table-formatter@0.0.3"],
 }
