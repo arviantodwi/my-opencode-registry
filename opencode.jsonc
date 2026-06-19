@@ -10,7 +10,7 @@
       "variant": "max"
     }
   },
-  "default_agent": "plan",
+  "default_agent": "build",
   "provider": {
     "ollama_local": {
       "npm": "@ai-sdk/openai-compatible",
