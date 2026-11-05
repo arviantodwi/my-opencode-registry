@@ -1,7 +1,7 @@
 ---
 description: Proceed plan using build agent
 agent: build
-subtask: false
+subagent: false
 ---
 
 Proceed with the plan. $ARGUMENTS
