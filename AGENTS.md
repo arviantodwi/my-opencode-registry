@@ -26,9 +26,9 @@ Use tmux for anything that outlives a single tool call: dev servers, file watche
 
 ## Obsidian knowledge base
 
-- Canonical vault: `/Users/sean/Desktop/Obsidian/AI-KB`.
-- For explicit vault work, load the global `obsidian-vault` skill before reading or changing notes. Its skill ID is `obsidian-vault`; its file is `/Users/sean/.agents/skills/obsidian-vault/SKILL.md`.
+- For explicit vault work, load the `obsidian-vault` skill by ID before reading or changing notes.
+- Resolve the vault location through the skill's machine-local configuration and first-use setup workflow. Keep device-specific paths out of shared instructions.
 - At meaningful task outcomes, proactively consider whether the session produced potentially reusable knowledge or an evidence-backed idea. When a plausible candidate exists, load `obsidian-vault` and apply its capture criteria, following its search-first rule before creating or updating notes. If no plausible candidate exists, skip vault access.
 - An explicit `/vault-capture` requests a manual review of the current session for missed capture opportunities, using the same capture criteria as proactive capture. Creating no notes is a valid outcome; briefly explain why nothing qualified.
-- Reading the vault is generally permitted, including in read-only modes such as Plan mode; writes follow the skill's approval boundaries.
+- Reading the vault is generally permitted, including in read-only modes such as Plan mode, subject to active tool permissions. All writes, including first-use configuration, must respect the active agent mode and the skill's approval boundaries.
 - The skill is the source of truth for capture criteria, permitted vault paths, evidence, tags, tracking, and approval boundaries.
