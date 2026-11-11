@@ -1,8 +1,2 @@
-node_modules
-package.json
-bun.lock
-*.bak
-.env
-!.env.example
 .DS_Store
 service.json
