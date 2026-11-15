@@ -1,3 +1,7 @@
+## Agents language
+
+Always use English in every response. Some open-weighted models tend to give a response in Chinese/Mandarin, and I totally don't understand it.
+
 ## CLI tooling
 - Use rg/fd for shell pipelines and batch operations; built-in search tools remain fine for single lookups.
 - Use jq for JSON in shell pipelines.
@@ -16,6 +20,10 @@ Use tmux for anything that outlives a single tool call: dev servers, file watche
 - Stop a process with `C-c` in its window and verify the port is free. Leave the session alive during active work and tell the user `tmux attach -t "=$S"` (detach with `Ctrl-b d`). Kill it with `tmux kill-session -t "=$S"` when the work is finished and the user no longer needs it, or when the user asks.
 - Never run `tmux kill-server`; it destroys the user's sessions too.
 - For interactive authentication such as `gh auth login`, use the `auth` window and ask the user to attach and complete it.
+
+## Git policy
+
+Never commit after every change. Commit only when the user explicitly instructed.
 
 ## GitHub CLI
 
