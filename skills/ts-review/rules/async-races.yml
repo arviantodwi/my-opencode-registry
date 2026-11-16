@@ -1,0 +1,64 @@
+# Each rule ships as a TypeScript/Tsx twin pair: the TypeScript twin scans .ts
+# files, the Tsx twin scans .tsx. Patterns are plain TS, valid in both languages.
+
+id: tsr-foreach-async
+language: TypeScript
+severity: error
+message: async callback in forEach — forEach ignores the returned promise.
+note: >
+  The loop does not wait, and rejections go unhandled. Use for...of with await,
+  or build an array and pass it to Promise.all.
+rule:
+  pattern: $ARR.forEach(async ($X) => $$BODY)
+---
+id: tsr-foreach-async-tsx
+language: Tsx
+severity: error
+message: async callback in forEach — forEach ignores the returned promise.
+note: >
+  The loop does not wait, and rejections go unhandled. Use for...of with await,
+  or build an array and pass it to Promise.all.
+rule:
+  pattern: $ARR.forEach(async ($X) => $$BODY)
+---
+id: tsr-map-async-unawaited
+language: TypeScript
+severity: warning
+message: async callback in map returns promises — verify the caller awaits them.
+note: >
+  Lead: `$ARR.map(async ...)` produces an array of promises. If the result is
+  not awaited or passed to Promise.all, the work floats and errors vanish.
+rule:
+  pattern: $ARR.map(async ($X) => $$BODY)
+---
+id: tsr-map-async-unawaited-tsx
+language: Tsx
+severity: warning
+message: async callback in map returns promises — verify the caller awaits them.
+note: >
+  Lead: `$ARR.map(async ...)` produces an array of promises. If the result is
+  not awaited or passed to Promise.all, the work floats and errors vanish.
+rule:
+  pattern: $ARR.map(async ($X) => $$BODY)
+---
+id: tsr-async-promise-executor
+language: TypeScript
+severity: error
+message: async executor inside new Promise — rejections and throws escape the promise.
+note: >
+  Anti-pattern: an async executor's errors become unhandled rejections outside
+  the promise chain. Resolve/reject synchronously and await inside the chain
+  instead.
+rule:
+  pattern: new Promise(async ($RES, $REJ) => {$$$B})
+---
+id: tsr-async-promise-executor-tsx
+language: Tsx
+severity: error
+message: async executor inside new Promise — rejections and throws escape the promise.
+note: >
+  Anti-pattern: an async executor's errors become unhandled rejections outside
+  the promise chain. Resolve/reject synchronously and await inside the chain
+  instead.
+rule:
+  pattern: new Promise(async ($RES, $REJ) => {$$$B})

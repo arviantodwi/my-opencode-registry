@@ -1,0 +1,64 @@
+# Each rule ships as a TypeScript/Tsx twin pair: the TypeScript twin scans .ts
+# files, the Tsx twin scans .tsx. Patterns are plain TS, valid in both languages.
+
+id: tsr-parseint-no-radix
+language: TypeScript
+severity: warning
+message: parseInt without a radix — parsing depends on the input string's prefix.
+note: >
+  Lead. Always pass a radix (usually 10); legacy engines treat leading zeros as
+  octal, and inputs like "0x1F" change meaning silently.
+rule:
+  pattern: parseInt($S)
+---
+id: tsr-parseint-no-radix-tsx
+language: Tsx
+severity: warning
+message: parseInt without a radix — parsing depends on the input string's prefix.
+note: >
+  Lead. Always pass a radix (usually 10); legacy engines treat leading zeros as
+  octal, and inputs like "0x1F" change meaning silently.
+rule:
+  pattern: parseInt($S)
+---
+id: tsr-date-from-string
+language: TypeScript
+severity: warning
+message: Date constructed from a string — non-ISO parsing is implementation-defined and timezone-dependent.
+note: >
+  Lead. `new Date('2026-11-16')` parses as UTC midnight while
+  `new Date('11/16/2026')` parses as local time — off-by-a-day bugs across time
+  zones. Prefer explicit, timezone-aware construction.
+rule:
+  pattern: new Date($S)
+---
+id: tsr-date-from-string-tsx
+language: Tsx
+severity: warning
+message: Date constructed from a string — non-ISO parsing is implementation-defined and timezone-dependent.
+note: >
+  Lead. `new Date('2026-11-16')` parses as UTC midnight while
+  `new Date('11/16/2026')` parses as local time — off-by-a-day bugs across time
+  zones. Prefer explicit, timezone-aware construction.
+rule:
+  pattern: new Date($S)
+---
+id: tsr-math-random
+language: TypeScript
+severity: warning
+message: Math.random() — non-deterministic; check it is not inside render bodies, sort comparators, or identity generation.
+note: >
+  Lead. Random values in a component body or sort comparator cause re-render
+  churn, unstable ordering, and SSR hydration mismatches.
+rule:
+  pattern: Math.random()
+---
+id: tsr-math-random-tsx
+language: Tsx
+severity: warning
+message: Math.random() — non-deterministic; check it is not inside render bodies, sort comparators, or identity generation.
+note: >
+  Lead. Random values in a component body or sort comparator cause re-render
+  churn, unstable ordering, and SSR hydration mismatches.
+rule:
+  pattern: Math.random()

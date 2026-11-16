@@ -1,0 +1,108 @@
+# Each rule ships as a TypeScript/Tsx twin pair: the TypeScript twin scans .ts
+# files, the Tsx twin scans .tsx. Patterns are plain TS, valid in both languages.
+
+id: tsr-loose-equality
+language: TypeScript
+severity: warning
+message: Loose equality (==) — coercion surprises; use === unless comparing against null intentionally.
+note: >
+  Lead. Intentional `x == null` (covers null and undefined) is excluded.
+rule:
+  all:
+    - pattern: $A == $B
+    - not: { pattern: $A == null }
+    - not: { pattern: $A == undefined }
+---
+id: tsr-loose-equality-tsx
+language: Tsx
+severity: warning
+message: Loose equality (==) — coercion surprises; use === unless comparing against null intentionally.
+note: >
+  Lead. Intentional `x == null` (covers null and undefined) is excluded.
+rule:
+  all:
+    - pattern: $A == $B
+    - not: { pattern: $A == null }
+    - not: { pattern: $A == undefined }
+---
+id: tsr-loose-inequality
+language: TypeScript
+severity: warning
+message: Loose inequality (!=) — coercion surprises; use !== unless comparing against null intentionally.
+note: >
+  Lead. Intentional `x != null` is excluded.
+rule:
+  all:
+    - pattern: $A != $B
+    - not: { pattern: $A != null }
+    - not: { pattern: $A != undefined }
+---
+id: tsr-loose-inequality-tsx
+language: Tsx
+severity: warning
+message: Loose inequality (!=) — coercion surprises; use !== unless comparing against null intentionally.
+note: >
+  Lead. Intentional `x != null` is excluded.
+rule:
+  all:
+    - pattern: $A != $B
+    - not: { pattern: $A != null }
+    - not: { pattern: $A != undefined }
+---
+id: tsr-assignment-in-if
+language: TypeScript
+severity: error
+message: Assignment inside an if condition — almost certainly meant to be a comparison.
+note: >
+  Real bug class: `if (x = y)`. If intentional, make it explicit with
+  parentheses.
+rule:
+  pattern: if ($X = $Y) { $$$B }
+---
+id: tsr-assignment-in-if-tsx
+language: Tsx
+severity: error
+message: Assignment inside an if condition — almost certainly meant to be a comparison.
+note: >
+  Real bug class: `if (x = y)`. If intentional, make it explicit with
+  parentheses.
+rule:
+  pattern: if ($X = $Y) { $$$B }
+---
+id: tsr-assignment-in-while
+language: TypeScript
+severity: error
+message: Assignment inside a while condition — almost certainly meant to be a comparison.
+note: >
+  Real bug class: `while (x = next())`. If intentional, make it explicit.
+rule:
+  pattern: while ($X = $Y) { $$$B }
+---
+id: tsr-assignment-in-while-tsx
+language: Tsx
+severity: error
+message: Assignment inside a while condition — almost certainly meant to be a comparison.
+note: >
+  Real bug class: `while (x = next())`. If intentional, make it explicit.
+rule:
+  pattern: while ($X = $Y) { $$$B }
+---
+id: tsr-nested-ternary
+language: TypeScript
+severity: hint
+message: Nested ternary — complexity lead for the readability pass.
+note: >
+  Lead, not a bug. Nested conditionals hide which branch runs; suggest
+  extracting.
+rule:
+  pattern: "$A ? $B ? $C : $D : $E"
+---
+id: tsr-nested-ternary-tsx
+language: Tsx
+severity: hint
+message: Nested ternary — complexity lead for the readability pass.
+note: >
+  Lead, not a bug. Nested conditionals hide which branch runs; suggest
+  extracting.
+rule:
+  pattern: "$A ? $B ? $C : $D : $E"

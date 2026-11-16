@@ -1,0 +1,64 @@
+# Each rule ships as a TypeScript/Tsx twin pair: the TypeScript twin scans .ts
+# files, the Tsx twin scans .tsx. Patterns are plain TS, valid in both languages.
+
+id: tsr-non-null-assertion
+language: TypeScript
+severity: warning
+message: Non-null assertion (`!`) — verify this value is guaranteed present at runtime.
+note: >
+  Review lead, not a verdict. Confirm with the real types and call flow; if the
+  value can be absent, prefer a guard or optional chaining over `!`.
+rule:
+  pattern: $X!
+---
+id: tsr-non-null-assertion-tsx
+language: Tsx
+severity: warning
+message: Non-null assertion (`!`) — verify this value is guaranteed present at runtime.
+note: >
+  Review lead, not a verdict. Confirm with the real types and call flow; if the
+  value can be absent, prefer a guard or optional chaining over `!`.
+rule:
+  pattern: $X!
+---
+id: tsr-index-member-chain
+language: TypeScript
+severity: warning
+message: Member access chained onto an index access — the indexed result may be undefined.
+note: >
+  Lead for unchecked-index bugs (`list[0].name`). Check whether both the index
+  hit and the chain are guaranteed. Enabling `noUncheckedIndexedAccess` in
+  tsconfig makes tsc catch this systematically — propose it as a ticket if absent.
+rule:
+  pattern: $A[$I].$P
+---
+id: tsr-index-member-chain-tsx
+language: Tsx
+severity: warning
+message: Member access chained onto an index access — the indexed result may be undefined.
+note: >
+  Lead for unchecked-index bugs (`list[0].name`). Check whether both the index
+  hit and the chain are guaranteed. Enabling `noUncheckedIndexedAccess` in
+  tsconfig makes tsc catch this systematically — propose it as a ticket if absent.
+rule:
+  pattern: $A[$I].$P
+---
+id: tsr-cast-to-any
+language: TypeScript
+severity: warning
+message: Cast to `any` — disables type checking, including null-safety, at this line.
+note: >
+  Lead. Prefer a precise type, `unknown` plus narrowing, or a documented reason.
+  `as unknown as X` double casts deserve the same scrutiny.
+rule:
+  pattern: $X as any
+---
+id: tsr-cast-to-any-tsx
+language: Tsx
+severity: warning
+message: Cast to `any` — disables type checking, including null-safety, at this line.
+note: >
+  Lead. Prefer a precise type, `unknown` plus narrowing, or a documented reason.
+  `as unknown as X` double casts deserve the same scrutiny.
+rule:
+  pattern: $X as any
