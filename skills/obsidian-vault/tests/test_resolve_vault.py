@@ -46,13 +46,12 @@ class ResolverTests(unittest.TestCase):
     def test_check_expands_home_and_does_not_create_folders(self):
         result = self.run_cli("check", "~/Vault With Spaces")
         self.assertEqual(result["vault_root"], str(self.vault))
-        self.assertEqual(result["folders"]["wiki"], str(self.vault / "wiki"))
-        self.assertEqual(result["missing_folders"], ["wiki", "ideas"])
+        self.assertEqual(result["folders"]["root"], str(self.vault))
+        self.assertEqual(result["missing_folders"], ["ideas"])
         self.assertFalse(self.config.parent.exists())
         self.assertEqual(list(self.vault.iterdir()), [])
 
     def test_configure_then_resolve_from_an_unrelated_working_directory(self):
-        (self.vault / "wiki").mkdir()
         result = self.run_cli("configure", str(self.vault))
         self.assertTrue(result["saved"])
         self.assertEqual(json.loads(self.config.read_text()), {"vault_root": str(self.vault)})
@@ -74,6 +73,18 @@ class ResolverTests(unittest.TestCase):
                 self.config.write_text(content)
                 self.run_cli(status="config_invalid")
                 self.assertEqual(self.config.read_text(), content)
+
+    def test_usage_errors_are_json_without_writes(self):
+        for arguments in (("check",), ("configure",), ("frobnicate",)):
+            with self.subTest(arguments=arguments):
+                self.run_cli(*arguments, status="usage_error")
+        self.assertFalse(self.config.parent.exists())
+
+    def test_unreadable_config_is_reported_without_repairing_it(self):
+        self.config.parent.mkdir(parents=True)
+        self.config.mkdir()
+        self.run_cli(status="config_error")
+        self.assertTrue(self.config.is_dir())
 
     def test_missing_vault_is_not_recreated(self):
         self.run_cli("configure", str(self.vault))
@@ -116,7 +127,7 @@ class ResolverTests(unittest.TestCase):
     def test_knowledge_folder_symlink_cannot_redirect_access(self):
         elsewhere = self.home / "Outside Vault"
         elsewhere.mkdir()
-        (self.vault / "wiki").symlink_to(elsewhere, target_is_directory=True)
+        (self.vault / "ideas").symlink_to(elsewhere, target_is_directory=True)
         self.run_cli("check", str(self.vault), status="vault_unavailable")
         self.assertFalse(self.config.parent.exists())
 

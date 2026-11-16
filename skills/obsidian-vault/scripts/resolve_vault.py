@@ -18,6 +18,13 @@ class VaultError(Exception):
         self.status = status
 
 
+class JsonArgumentParser(argparse.ArgumentParser):
+    """Turns command line mistakes into VaultError so every failure prints JSON."""
+
+    def error(self, message):
+        raise VaultError("usage_error", "Command line error: {}".format(message))
+
+
 def config_location():
     return Path.home() / ".config" / "obsidian-vault" / "config.json"
 
@@ -52,9 +59,9 @@ def inspect_vault(value, config):
         if not os.access(root, os.R_OK | os.X_OK):
             raise VaultError("vault_unavailable", "Vault directory is not readable: {}".format(root))
 
-        folders = {}
+        folders = {"root": str(root)}
         missing = []
-        for name in ("wiki", "ideas"):
+        for name in ("ideas",):
             folder = root / name
             if folder.resolve(strict=False) != folder:
                 raise VaultError(
@@ -122,7 +129,7 @@ def save_config(path, root, replace):
 
 
 def main():
-    parser = argparse.ArgumentParser(description=__doc__)
+    parser = JsonArgumentParser(description=__doc__)
     commands = parser.add_subparsers(dest="command")
     commands.add_parser("resolve", help="Read the local setting (the default); never writes.")
     check = commands.add_parser("check", help="Validate a proposed vault path without writing anything.")
@@ -130,10 +137,10 @@ def main():
     configure = commands.add_parser("configure", help="Validate a path and save this machine's setting.")
     configure.add_argument("vault_root")
     configure.add_argument("--replace", action="store_true", help="Explicitly replace an existing setting.")
-    args = parser.parse_args()
     config = config_location()
 
     try:
+        args = parser.parse_args()
         if args.command in (None, "resolve"):
             data = read_config(config)
             try:
