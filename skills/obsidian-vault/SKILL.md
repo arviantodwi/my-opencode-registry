@@ -6,7 +6,7 @@ description: Search, capture, update, tag, and review durable knowledge and
   finding, a troubleshooting result, or an evidence-backed idea worth
   preserving, or when asked to review a session for missed capture
   opportunities (for example via `/vault-capture`). At the start of every
-  session, load this skill and read the vault's index.md — an unconditional
+  session, load this skill and read the vault's _index.md — an unconditional
   bootstrap, even when the first request is trivial.
 ---
 
@@ -49,7 +49,7 @@ python3 scripts/resolve_vault.py
 
 The helper uses Python 3's standard library, prints JSON, and never prompts on stdin. A `ready` result exits with code 0; setup or access problems exit with code 1 and a status/message. A malformed command line returns JSON too, with status `usage_error`, and exits 1. The agent handles the conversation:
 
-- **`ready`**: use the returned absolute `vault_root` (`folders.root`) for root-level notes and `folders.ideas` for idea notes as file-tool paths. Re-resolve at the start of each vault task; do not rely on a path remembered from another machine or an earlier task. After a `ready` result, read `index.md` at the vault root as part of starting the vault task, unless it is already present in the current context.
+- **`ready`**: use the returned absolute `vault_root` (`folders.root`) for root-level notes and `folders.ideas` for idea notes as file-tool paths. Re-resolve at the start of each vault task; do not rely on a path remembered from another machine or an earlier task. After a `ready` result, read `_index.md` at the vault root as part of starting the vault task, unless it is already present in the current context.
 - **`config_missing`**: ask once, through the available chat question/input UI: "Where is your Obsidian vault on the machine running this agent? Give an existing absolute path or a path starting with `~/`. I'll save it as this machine's local vault setting." On a VM, ask for a path accessible inside the VM, such as a synced copy or mount.
 - **`config_invalid`** or **`invalid_vault_path`**: explain the validation error and ask for a corrected path. Do not scan the filesystem to guess a vault.
 - **`vault_unavailable`**: explain which path is unavailable. Ask whether the user wants to restore access and retry or configure a different existing directory. Do not create a replacement vault or silently fall back to another location.
@@ -77,7 +77,7 @@ If the user declines setup, skip the vault operation and say so briefly. Do not 
 ## Vault boundary
 
 - The configured, resolved `vault_root` is the vault for this machine.
-- Search, read, and write only Markdown notes at the vault root (`folders.root`) and inside `folders.ideas`. Do not inspect other vault paths or subfolders, `.obsidian/`, or attachments. Reading the machine-local configuration and running the bundled resolver are the setup exceptions, outside the vault.
+- Search, read, and write only Markdown notes at the vault root (`folders.root`) and inside `folders.ideas`. Do not inspect other vault paths or subfolders, `.obsidian/`, or attachments. `_index-base.base` and every other `.base` file are Obsidian app artifacts for human views, not notes: ignore them entirely — never read, write, search, or report on them. Reading the machine-local configuration and running the bundled resolver are the setup exceptions, outside the vault.
 - Resolve file paths before access; do not follow note or nested-directory symlinks outside their approved location. The resolver checks the top-level `ideas/` folder path, not every descendant.
 - The vault root and `ideas/` are the only approved note locations. `missing_folders` identifies `ideas/` when it does not exist yet: create it only when a qualifying idea note needs to be written and the active mode permits writes. Do not create other directories without approval.
 - An inaccessible vault or an invalid existing knowledge folder is a blocker. Follow the recovery flow above rather than selecting another location automatically.
@@ -87,7 +87,7 @@ If the user declines setup, skip the vault operation and say so briefly. Do not 
 Proactive creation and editing are allowed, but use a high quality bar:
 
 1. Capture only information that is genuinely new, useful beyond the current exchange, and sufficiently clear to preserve.
-2. Before every create or edit, search existing note titles and contents at the vault root and in `ideas/`, including the index. Reuse or improve a suitable note instead of creating a near-duplicate. If the information is already covered, do not write it again.
+2. Before every create or edit, search existing note titles and contents at the vault root and in `ideas/`, including `_index`. Reuse or improve a suitable note instead of creating a near-duplicate. If the information is already covered, do not write it again.
 3. Skip borderline material. Ask only when an ambiguous item seems unusually important.
 4. Do not automatically capture personal details or preferences. Save a personal detail only when the user explicitly asks. Never put passwords, API keys, tokens, or other credentials in the vault.
 
@@ -112,9 +112,10 @@ Do not put unsupported factual claims in root notes. If an uncertain item does n
 - Use Title Case filenames for new notes. Do not proactively rename existing notes to normalize their names.
 - Keep one main topic per note. Make it self-contained and easy for both a person and another agent to understand. Use headings such as summary, evidence, rationale, or questions to revisit when they help; there is no rigid body template.
 - Use Obsidian `[[wikilinks]]` for note links. Add a short related-notes section at the bottom when relevant.
-- Use YAML/Obsidian `tags` properties when tags are applicable. Tags are freeform but must stay relevant and meaningful: assign only tags that describe the note's actual topic, tool, or concept, never random or weakly related tags. Meaningful tags improve AI retrieval and keep tag/graph connections useful and efficient to traverse. Use lowercase kebab-case, reuse existing relevant tags, and add all salient topic/tool/concept tags without padding the list with generic tags. For example, a React Hook Form and Zod note could include `react-hook-form`, `zod`, `typescript`, `react`, `form-validation`, and `hookform-resolvers` when each is genuinely relevant. In addition to topic tags, give each note exactly one kind tag — `troubleshooting`, `how-to`, or `reference` — describing why the note is consulted. Notes whose correctness is tied to specific tool versions — layout changes, deprecations, release state — also get `version-sensitive`.
-- Add tags to new notes and to existing notes being edited, except index notes. Do not bulk-tag older notes unless asked.
-- Maintain a single `index.md` at the vault root as a concise list of wikilinks with helpful descriptions, grouped by location: a **Notes** section for root-level notes and an **Ideas** section for `ideas/` notes. The index carries no `tags` property and never lists itself. Keep the Ideas section's match count and last-matched date current. Do not create the index before the first qualifying note exists.
+- Use YAML/Obsidian `tags` properties when tags are applicable. Tags are freeform but must stay relevant and meaningful: assign only tags that describe the note's actual topic, tool, or concept, never random or weakly related tags. Meaningful tags improve AI retrieval and keep tag/graph connections useful and efficient to traverse. Use lowercase kebab-case, reuse existing relevant tags, and add all salient topic/tool/concept tags without padding the list with generic tags. For example, a React Hook Form and Zod note could include `react-hook-form`, `zod`, `typescript`, `react`, `form-validation`, and `hookform-resolvers` when each is genuinely relevant.
+- Every note carries a `kind` property whose value is exactly one of `troubleshooting`, `how-to`, or `reference` — why the note is consulted. Notes whose correctness is tied to specific tool versions — layout changes, deprecations, release state — set the `is_version_sensitive` checkbox property. Neither the kind values nor `version-sensitive` ever appear in `tags`.
+- Add tags and the `kind` property to new notes and to existing notes being edited, except index notes. Do not bulk-tag older notes unless asked.
+- Maintain a single `_index.md` at the vault root as a concise list of wikilinks with helpful descriptions, grouped by location: a **Notes** section for root-level notes and an **Ideas** section for `ideas/` notes. The index carries no `tags` property and never lists itself. Keep the Ideas section's match count and last-matched date current. Do not create the index before the first qualifying note exists.
 
 ## Evidence, sources, and troubleshooting
 
@@ -144,7 +145,7 @@ matches:
 - Add at most one match for each distinct user task where the idea's substance materially helps. Do not count keyword overlap, repeated searching, follow-up turns, rephrases, or the weekly review itself.
 - Track matches only; there is no automatic promotion threshold. A high count is a review signal, not permission to move a note.
 - Run the review only when asked. Summarize ideas ordered by match count (highest first), then recency, and suggest possible `ideas/` → root-note promotions. Never move an idea as a result of the count alone.
-- Update the Ideas section of `index.md` when an idea is created or its tracking changes.
+- Update the Ideas section of `_index.md` when an idea is created or its tracking changes.
 
 ## Approval boundaries and reporting
 
