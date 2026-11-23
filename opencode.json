@@ -25,6 +25,22 @@
       }
     }
   ],
+  "policies": [
+    {
+      "action": "provider.use",
+      "resource": "cloudflare-ai-gateway",
+      "effect": "deny"
+    },
+    {
+      "action": "provider.use",
+      "resource": "cloudflare-workers-ai",
+      "effect": "deny"
+    }
+  ],
+  "disabled_providers": [
+    "cloudflare-ai-gateway",
+    "cloudflare-workers-ai"
+  ],
   "websearch": {
     "provider": "random"
   }
