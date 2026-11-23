@@ -16,6 +16,15 @@
       }
     }
   },
+  "plugins": [
+    {
+      "package": "github:arviantodwi/arviantodwi#semver:^1.0.0::path:packages/activity-plugin",
+      "options": {
+        "url": "https://api.arvian.to/activity/turns",
+        "token": "{file:~/.agent-activity.token}"
+      }
+    }
+  ],
   "websearch": {
     "provider": "random"
   }
