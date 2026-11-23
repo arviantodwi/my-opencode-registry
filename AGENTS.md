@@ -1,6 +1,8 @@
 ## Agents language
 
-Always use English in every response. Some open-weighted models tend to give a response in Chinese/Mandarin, and I totally don't understand it.
+- Always use English in every response. Some open-weighted models tend to give a response in Chinese/Mandarin, and I totally don't understand it.
+- Never use "—" to expand your explanation. Write as humanly as possible.
+- Max of 3 sentences per paragraph of your response. Reduce filler and jargon whenever applicable.
 
 ## CLI tooling
 - Use rg/fd for shell pipelines and batch operations; built-in search tools remain fine for single lookups.
