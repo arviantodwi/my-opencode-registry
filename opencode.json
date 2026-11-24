@@ -13,6 +13,16 @@
           "openCodeCLI"
         ],
         "disabled": false
+      },
+      "figcraft": {
+        "type": "local",
+        "command": [
+          "figcraft-cli",
+          "mcp",
+          "--attach",
+          "7979"
+        ],
+        "disabled": false
       }
     }
   },
