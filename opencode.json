@@ -33,7 +33,8 @@
         "url": "https://api.arvian.to/activity/turns",
         "token": "{file:~/.agent-activity.token}"
       }
-    }
+    },
+    "./plugins/pen-org-rotator"
   ],
   "policies": [
     {
